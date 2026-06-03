@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <title>Oliver & Sophia | Wedding Invitation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.8/400.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.8/700.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/lato@5.0.8/400.css">
@@ -21,11 +23,11 @@
             font-family: 'Playfair Display', serif;
         }
         
-        /* Envelope Overlay */
+        /* Full Screen Envelope Overlay */
         #envelopeOverlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(ellipse at center, #F5EBE0 0%, #E8D5C4 70%, #D4B896 100%);
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #E8D5C4;
             z-index: 1000;
             display: flex;
             justify-content: center;
@@ -33,81 +35,95 @@
             perspective: 1500px;
             overflow: hidden;
         }
+
+        /* Subtle paper texture */
+        #envelopeOverlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
         
-        .envelope-container {
+        .envelope-full {
             position: relative;
-            width: 340px;
-            height: 240px;
-            cursor: pointer;
+            width: 100vw;
+            height: 100vh;
             transform-style: preserve-3d;
         }
 
-        .envelope-back {
+        /* The 4 Flaps */
+        .flap {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #D4B896 0%, #C49A6C 100%);
-            border-radius: 4px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-            z-index: 1;
+            background: linear-gradient(135deg, #D4B896 0%, #B8895E 100%);
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.15);
+            transform-origin: center;
+            z-index: 2;
         }
 
-        .envelope-flap {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #C49A6C 0%, #A87D52 100%);
-            clip-path: polygon(0 0, 100% 0, 50% 55%);
-            transform-origin: top;
-            z-index: 4;
-            border-radius: 4px 4px 0 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        .flap-top {
+            top: 0; left: 0; width: 100%; height: 50%;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top center;
+            background: linear-gradient(180deg, #C49A6C 0%, #A87D52 100%);
         }
 
-        .envelope-pocket {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #B8895E 0%, #9E7348 100%);
-            clip-path: polygon(0 100%, 0 45%, 50% 55%, 100% 45%, 100% 100%);
-            z-index: 3;
-            border-radius: 0 0 4px 4px;
+        .flap-bottom {
+            bottom: 0; left: 0; width: 100%; height: 50%;
+            clip-path: polygon(0 100%, 100% 100%, 50% 0);
+            transform-origin: bottom center;
+            background: linear-gradient(0deg, #9E7348 0%, #B8895E 100%);
         }
 
-        .envelope-card {
+        .flap-left {
+            top: 0; left: 0; width: 50%; height: 100%;
+            clip-path: polygon(0 0, 100% 50%, 0 100%);
+            transform-origin: left center;
+            background: linear-gradient(90deg, #A87D52 0%, #C49A6C 100%);
+        }
+
+        .flap-right {
+            top: 0; right: 0; width: 50%; height: 100%;
+            clip-path: polygon(100% 0, 100% 100%, 0 50%);
+            transform-origin: right center;
+            background: linear-gradient(270deg, #C49A6C 0%, #A87D52 100%);
+        }
+
+        /* Inner card visible after flaps open */
+        .inner-card {
             position: absolute;
-            top: 12px; left: 16px; right: 16px; bottom: 16px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px; height: 560px;
             background: linear-gradient(135deg, #FFFEF9 0%, #FFF8EB 100%);
-            border-radius: 4px;
+            border-radius: 8px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+            z-index: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 2;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            justify-content: center;
+            padding: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            opacity: 0;
         }
 
-        .envelope-card::before {
+        .inner-card::before {
             content: '';
             position: absolute;
-            top: 8px; left: 8px; right: 8px; bottom: 8px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 2px;
+            top: 16px; left: 16px; right: 16px; bottom: 16px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 4px;
             pointer-events: none;
         }
 
         .wax-seal {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 64px;
-            height: 64px;
-            background: radial-gradient(circle at 35% 35%, #B83A3A, #8B2635 60%, #5E1A24 100%);
+            width: 110px; height: 110px;
+            background: radial-gradient(circle at 35% 35%, #D44A4A, #8B2635 50%, #4A101A 100%);
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -115,13 +131,13 @@
             color: #D4AF37;
             font-family: 'Playfair Display', serif;
             font-weight: bold;
-            font-size: 18px;
-            letter-spacing: 1px;
+            font-size: 28px;
+            letter-spacing: 2px;
             box-shadow: 
-                inset 0 2px 4px rgba(255,255,255,0.3),
-                inset 0 -2px 4px rgba(0,0,0,0.3),
-                0 6px 12px rgba(0,0,0,0.35);
-            z-index: 5;
+                inset 0 3px 6px rgba(255,255,255,0.4),
+                inset 0 -3px 6px rgba(0,0,0,0.4),
+                0 10px 25px rgba(0,0,0,0.5);
+            z-index: 10;
             cursor: pointer;
             transition: transform 0.2s;
         }
@@ -129,13 +145,34 @@
         .wax-seal::before {
             content: '';
             position: absolute;
-            top: 4px; left: 4px; right: 4px; bottom: 4px;
-            border: 1.5px solid rgba(212, 175, 55, 0.4);
+            top: 8px; left: 8px; right: 8px; bottom: 8px;
+            border: 2px solid rgba(212, 175, 55, 0.5);
             border-radius: 50%;
         }
 
         .wax-seal:hover {
-            transform: translate(-50%, -50%) scale(1.08);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .wax-seal::after {
+            content: 'Tap to Open';
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #8B2635;
+            white-space: nowrap;
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            animation: pulseText 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
         /* Main content reveal */
@@ -226,6 +263,84 @@
             background: linear-gradient(90deg, transparent, #D4AF37, transparent);
         }
 
+        /* Timeline Styles */
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 0;
+            background: linear-gradient(180deg, #D4AF37 0%, #B8962E 100%);
+            z-index: 1;
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 20px 40px;
+            opacity: 0;
+        }
+
+        .timeline-item.left {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item.right {
+            left: 50%;
+            text-align: left;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            background: #FFF;
+            border: 3px solid #D4AF37;
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.2);
+        }
+
+        .timeline-item.left .timeline-dot {
+            right: -10px;
+        }
+
+        .timeline-item.right .timeline-dot {
+            left: -10px;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-line {
+                left: 20px;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 60px;
+                padding-right: 20px;
+                text-align: left !important;
+            }
+            .timeline-item.left, .timeline-item.right {
+                left: 0;
+            }
+            .timeline-dot {
+                left: 10px !important;
+                right: auto !important;
+            }
+            .inner-card {
+                width: 90vw;
+                height: 70vh;
+            }
+        }
+
         /* Subtle shimmer on hero */
         @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -243,28 +358,28 @@
 </head>
 <body class="antialiased">
 
-    <!-- Envelope Overlay -->
+    <!-- Full Screen Envelope Overlay -->
     <div id="envelopeOverlay">
-        <div class="envelope-container" id="envelopeContainer">
-            <div class="envelope-back"></div>
-            <div class="envelope-card" id="envelopeCard">
-                <p class="serif text-2xl text-[#8B2635] mb-2">You're Invited</p>
-                <p class="text-xs tracking-[0.3em] text-gray-500 uppercase">Oliver & Sophia</p>
-                <div class="ornament my-3">
+        <div class="envelope-full" id="envelopeFull">
+            <div class="flap flap-top" id="flapTop"></div>
+            <div class="flap flap-bottom" id="flapBottom"></div>
+            <div class="flap flap-left" id="flapLeft"></div>
+            <div class="flap flap-right" id="flapRight"></div>
+            
+            <div class="inner-card" id="innerCard">
+                <p class="text-[10px] tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Wedding Invitation</p>
+                <h2 class="serif text-5xl text-[#2C2C2C] mb-3 text-center">Oliver<br><span class="text-[#D4AF37] text-3xl italic">&amp;</span><br>Sophia</h2>
+                <div class="ornament my-4">
                     <div class="ornament-line"></div>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#D4AF37"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    <span class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">20.06.26</span>
                     <div class="ornament-line"></div>
                 </div>
-                <p class="serif text-sm text-gray-600">June 20, 2026</p>
+                <p class="serif text-lg text-gray-600 italic">The Rosewood Estate</p>
             </div>
-            <div class="envelope-pocket"></div>
-            <div class="envelope-flap" id="envelopeFlap"></div>
+
             <div class="wax-seal" id="waxSeal">
-                <span>O&S</span>
+                <span>O&amp;S</span>
             </div>
-        </div>
-        <div class="absolute bottom-16 text-center">
-            <p class="text-xs tracking-[0.4em] text-[#8B2635] uppercase font-light animate-pulse">Tap the seal to open</p>
         </div>
     </div>
 
@@ -282,7 +397,7 @@
             <div class="text-center mb-10 reveal-element">
                 <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Together with their families</p>
                 <h1 class="serif text-5xl md:text-7xl text-[#2C2C2C] mb-4 leading-tight">
-                    Oliver <span class="shimmer-text text-4xl md:text-5xl align-middle mx-2 italic">&</span> Sophia
+                    Oliver <span class="shimmer-text text-4xl md:text-5xl align-middle mx-2 italic">&amp;</span> Sophia
                 </h1>
                 <p class="serif text-xl md:text-2xl text-gray-600 italic">Invite you to celebrate their wedding</p>
             </div>
@@ -290,7 +405,7 @@
             <div class="relative w-full max-w-md mx-auto reveal-image">
                 <div class="absolute -inset-4 border border-[#D4AF37] opacity-40 transform rotate-2"></div>
                 <div class="absolute -inset-4 border border-[#D4AF37] opacity-40 transform -rotate-2"></div>
-                <img src="https://image.qwenlm.ai/public_source/8ae4155d-db65-4b5b-84b9-649f1b84d66b/15b3cdd61-3f59-4087-affa-3a906b55185c.png" 
+                <img src="https://image.qwenlm.ai/public_source/8ae4155d-db65-4b5b-84b9-649f1b84d66b/18f6b7164-37d6-4780-b4fe-68cc804c2b23.png" 
                      alt="Oliver and Sophia" 
                      class="w-full h-[520px] object-cover shadow-2xl rounded-sm relative z-10">
             </div>
@@ -340,12 +455,67 @@
             <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-40"></div>
         </section>
 
+        <!-- Timetable Section -->
+        <section class="py-24 px-6 relative overflow-hidden" id="timetableSection">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-20 reveal-element">
+                    <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">The Journey</p>
+                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">Wedding Day Timeline</h2>
+                    <p class="text-gray-500 mt-4 italic max-w-xl mx-auto">Join us as we celebrate our love, step by step, from morning preparations to the evening reception.</p>
+                </div>
+
+                <div class="timeline-container">
+                    <div class="timeline-line" id="timelineLine"></div>
+
+                    <!-- Stop 1 -->
+                    <div class="timeline-item left" data-timeline>
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#D4AF37] hover:shadow-xl transition-shadow duration-300">
+                            <p class="text-[#D4AF37] font-bold tracking-widest text-sm mb-2">10:00 AM</p>
+                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Groom's Home</h3>
+                            <p class="text-gray-600 text-sm">Getting ready, final touches, and a toast with the groomsmen.</p>
+                        </div>
+                    </div>
+
+                    <!-- Stop 2 -->
+                    <div class="timeline-item right" data-timeline>
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#8B2635] hover:shadow-xl transition-shadow duration-300">
+                            <p class="text-[#8B2635] font-bold tracking-widest text-sm mb-2">11:30 AM</p>
+                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Bride's Home</h3>
+                            <p class="text-gray-600 text-sm">The first look, emotional moments, and capturing the magic with the bridesmaids.</p>
+                        </div>
+                    </div>
+
+                    <!-- Stop 3 -->
+                    <div class="timeline-item left" data-timeline>
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#D4AF37] hover:shadow-xl transition-shadow duration-300">
+                            <p class="text-[#D4AF37] font-bold tracking-widest text-sm mb-2">2:00 PM</p>
+                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Church Ceremony</h3>
+                            <p class="text-gray-600 text-sm">Exchanging vows and rings at St. Andrew's Cathedral. Please be seated by 1:45 PM.</p>
+                        </div>
+                    </div>
+
+                    <!-- Stop 4 -->
+                    <div class="timeline-item right" data-timeline>
+                        <div class="timeline-dot"></div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#8B2635] hover:shadow-xl transition-shadow duration-300">
+                            <p class="text-[#8B2635] font-bold tracking-widest text-sm mb-2">4:00 PM</p>
+                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Reception Hall</h3>
+                            <p class="text-gray-600 text-sm">Cocktails, dinner, dancing, and celebrating at The Rosewood Estate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Details Section -->
-        <section class="py-24 px-6">
+        <section class="py-24 px-6 bg-[#F5EBE0]">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-16 reveal-element">
                     <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">The Details</p>
-                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">When & Where</h2>
+                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">When &amp; Where</h2>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-10">
@@ -446,7 +616,7 @@
         <!-- Footer -->
         <footer class="py-16 px-6 text-center bg-[#2C2C2C] text-white relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-60"></div>
-            <h3 class="serif text-4xl mb-4 shimmer-text">Oliver & Sophia</h3>
+            <h3 class="serif text-4xl mb-4 shimmer-text">Oliver &amp; Sophia</h3>
             <p class="text-gray-400 text-sm tracking-[0.3em] uppercase">June 20, 2026 • The Rosewood Estate</p>
             <div class="mt-8 flex justify-center">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5">
@@ -458,42 +628,24 @@
     </main>
 
     <script>
-        // Envelope Animation
-        const envelopeContainer = document.getElementById('envelopeContainer');
-        const envelopeFlap = document.getElementById('envelopeFlap');
-        const envelopeCard = document.getElementById('envelopeCard');
-        const waxSeal = document.getElementById('waxSeal');
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Full Screen Envelope Animation
         const envelopeOverlay = document.getElementById('envelopeOverlay');
+        const envelopeFull = document.getElementById('envelopeFull');
+        const flapTop = document.getElementById('flapTop');
+        const flapBottom = document.getElementById('flapBottom');
+        const flapLeft = document.getElementById('flapLeft');
+        const flapRight = document.getElementById('flapRight');
+        const waxSeal = document.getElementById('waxSeal');
+        const innerCard = document.getElementById('innerCard');
         const mainContent = document.getElementById('mainContent');
         
         let envelopeOpened = false;
 
-        // Subtle tilt effect on envelope hover
-        envelopeContainer.addEventListener('mousemove', (e) => {
-            if (envelopeOpened) return;
-            const rect = envelopeContainer.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            gsap.to(envelopeContainer, {
-                rotateY: x * 0.05,
-                rotateX: -y * 0.05,
-                duration: 0.4,
-                ease: "power2.out"
-            });
-        });
+        waxSeal.addEventListener('click', openEnvelope);
 
-        envelopeContainer.addEventListener('mouseleave', () => {
-            if (envelopeOpened) return;
-            gsap.to(envelopeContainer, {
-                rotateY: 0,
-                rotateX: 0,
-                duration: 0.6,
-                ease: "power2.out"
-            });
-        });
-
-        // Click to open
-        envelopeContainer.addEventListener('click', () => {
+        function openEnvelope() {
             if (envelopeOpened) return;
             envelopeOpened = true;
 
@@ -503,40 +655,55 @@
             tl.to(waxSeal, {
                 scale: 0,
                 opacity: 0,
-                rotation: 180,
-                duration: 0.5,
-                ease: "back.in(2)"
+                rotation: 720,
+                duration: 0.6,
+                ease: "back.in(3)"
             })
-            // 2. Flap opens
-            .to(envelopeFlap, {
-                rotationX: 180,
-                duration: 0.9,
-                ease: "power2.inOut"
-            }, "-=0.2")
-            // 3. Card slides up out of envelope
-            .to(envelopeCard, {
-                y: -150,
-                duration: 0.7,
-                ease: "power3.out"
-            }, "-=0.5")
-            // 4. Golden particle burst
+            // Particle burst
             .call(() => createBurst(), null, "-=0.3")
-            // 5. Card scales up to fill screen
-            .to(envelopeCard, {
-                scale: 3.5,
-                y: 0,
-                opacity: 0,
+            // 2. Flaps open outward
+            .to(flapTop, {
+                rotationX: -180,
                 duration: 1.2,
-                ease: "power2.inOut"
-            }, "+=0.2")
-            // 6. Envelope fades and scales down
-            .to(envelopeContainer, {
-                scale: 0.8,
-                opacity: 0,
+                ease: "power3.inOut"
+            }, "-=0.2")
+            .to(flapBottom, {
+                rotationX: 180,
                 duration: 1.2,
-                ease: "power2.inOut"
+                ease: "power3.inOut"
             }, "<")
-            // 7. Overlay fades
+            .to(flapLeft, {
+                rotationY: -180,
+                duration: 1.2,
+                ease: "power3.inOut"
+            }, "<")
+            .to(flapRight, {
+                rotationY: 180,
+                duration: 1.2,
+                ease: "power3.inOut"
+            }, "<")
+            // 3. Inner card fades in and scales up
+            .to(innerCard, {
+                opacity: 1,
+                scale: 1,
+                duration: 0.8,
+                ease: "back.out(1.7)"
+            }, "-=0.8")
+            // 4. Pause to admire
+            .to({}, { duration: 0.8 })
+            // 5. Card scales massively to fill screen
+            .to(innerCard, {
+                scale: 25,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power2.inOut"
+            })
+            // 6. Flaps fade out
+            .to([flapTop, flapBottom, flapLeft, flapRight], {
+                opacity: 0,
+                duration: 0.8
+            }, "<")
+            // 7. Overlay fades and reveals main content
             .to(envelopeOverlay, {
                 opacity: 0,
                 duration: 0.8,
@@ -546,9 +713,10 @@
                     mainContent.style.visibility = 'visible';
                     mainContent.style.opacity = '1';
                     revealOnScroll();
+                    initTimeline();
                 }
-            }, "-=0.6");
-        });
+            }, "-=0.4");
+        }
 
         // Golden particle burst
         function createBurst() {
@@ -556,20 +724,20 @@
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
             
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 60; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                const size = Math.random() * 6 + 2;
+                const size = Math.random() * 8 + 3;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
                 particle.style.background = Math.random() > 0.5 ? '#D4AF37' : '#F5D77A';
                 particle.style.left = centerX + 'px';
                 particle.style.top = centerY + 'px';
-                particle.style.boxShadow = '0 0 8px rgba(212, 175, 55, 0.8)';
+                particle.style.boxShadow = '0 0 10px rgba(212, 175, 55, 0.8)';
                 container.appendChild(particle);
 
-                const angle = (Math.PI * 2 * i) / 40;
-                const distance = Math.random() * 300 + 150;
+                const angle = (Math.PI * 2 * i) / 60;
+                const distance = Math.random() * 400 + 200;
                 const xDest = Math.cos(angle) * distance;
                 const yDest = Math.sin(angle) * distance;
 
@@ -577,11 +745,68 @@
                     x: xDest,
                     y: yDest,
                     opacity: 0,
-                    duration: Math.random() * 1 + 1,
+                    duration: Math.random() * 1.5 + 1,
                     ease: "power3.out",
                     onComplete: () => particle.remove()
                 });
             }
+        }
+
+        // Timeline Animation with ScrollTrigger
+        function initTimeline() {
+            const timelineLine = document.getElementById('timelineLine');
+            const timelineItems = document.querySelectorAll('[data-timeline]');
+
+            // Animate the central line growing
+            gsap.to(timelineLine, {
+                height: '100%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.timeline-container',
+                    start: 'top 70%',
+                    end: 'bottom 70%',
+                    scrub: 1
+                }
+            });
+
+            // Animate each timeline item popping in
+            timelineItems.forEach((item, index) => {
+                const isLeft = item.classList.contains('left');
+                
+                gsap.fromTo(item, 
+                    { 
+                        opacity: 0, 
+                        x: isLeft ? -60 : 60 
+                    },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        duration: 1,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: 'top 80%',
+                            toggleActions: 'play none none none'
+                        },
+                        delay: index * 0.1
+                    }
+                );
+
+                // Animate the dot
+                const dot = item.querySelector('.timeline-dot');
+                gsap.fromTo(dot,
+                    { scale: 0 },
+                    {
+                        scale: 1,
+                        duration: 0.6,
+                        ease: "back.out(1.7)",
+                        scrollTrigger: {
+                            trigger: item,
+                            start: 'top 80%'
+                        }
+                    }
+                );
+            });
         }
 
         // RSVP Logic
@@ -655,26 +880,26 @@
         // Floating ambient particles for envelope background
         function createAmbientParticles() {
             const container = document.querySelector('#envelopeOverlay');
-            for (let i = 0; i < 25; i++) {
+            for (let i = 0; i < 30; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                const size = Math.random() * 4 + 1;
+                const size = Math.random() * 5 + 1;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
                 particle.style.background = Math.random() > 0.5 ? '#D4AF37' : '#FFF8EB';
-                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particle.style.opacity = Math.random() * 0.6 + 0.1;
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.top = (Math.random() * 100 + 100) + '%';
-                particle.style.boxShadow = '0 0 6px rgba(212, 175, 55, 0.5)';
+                particle.style.boxShadow = '0 0 8px rgba(212, 175, 55, 0.6)';
                 container.appendChild(particle);
 
                 gsap.to(particle, {
                     y: -window.innerHeight * 2,
-                    x: (Math.random() - 0.5) * 200,
-                    duration: Math.random() * 15 + 15,
+                    x: (Math.random() - 0.5) * 300,
+                    duration: Math.random() * 20 + 15,
                     repeat: -1,
                     ease: "none",
-                    delay: Math.random() * 10
+                    delay: Math.random() * 15
                 });
             }
         }
@@ -682,24 +907,31 @@
         // Initial entrance animation
         window.addEventListener('load', () => {
             createAmbientParticles();
-            gsap.from(envelopeContainer, {
-                scale: 0.7,
-                y: 40,
+            gsap.from(envelopeFull, {
+                scale: 0.8,
                 opacity: 0,
-                duration: 1.4,
-                ease: "elastic.out(1, 0.6)",
-                delay: 0.3
+                duration: 1.5,
+                ease: "power3.out"
             });
             gsap.from(waxSeal, {
                 scale: 0,
                 rotation: -180,
-                duration: 1,
+                duration: 1.2,
                 ease: "back.out(1.7)",
-                delay: 1
+                delay: 0.8
+            });
+            // Subtle hover float for the seal
+            gsap.to(waxSeal, {
+                y: -8,
+                duration: 2,
+                yoyo: true,
+                repeat: -1,
+                ease: "sine.inOut",
+                delay: 2
             });
         });
     </script>
 </body>
 </html>
-
+```
 
