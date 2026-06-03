@@ -4,413 +4,543 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex & Elena | Wedding Invitation</title>
-    
-    <!-- Tailwind CSS -->
+    <title>Oliver & Sophia | Wedding Invitation</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Fontsource -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.8/index.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/lato@5.0.8/index.min.css">
-    
-    <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'cream': '#FDFBF7',
-                        'soft-black': '#2D2D2D',
-                        'gold': '#C5A065',
-                        'sage': '#8B9A7E',
-                        'blush': '#E8D5D0',
-                    },
-                    fontFamily: {
-                        'serif': ['"Playfair Display"', 'serif'],
-                        'sans': ['Lato', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.8/400.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.8/700.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/lato@5.0.8/400.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/lato@5.0.8/300.css">
     <style>
         body {
+            font-family: 'Lato', sans-serif;
             background-color: #FDFBF7;
+            color: #4A4A4A;
             overflow-x: hidden;
         }
-
-        /* Envelope Styles */
-        .envelope-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #F4EFEA;
-            z-index: 50;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .envelope {
-            position: relative;
-            width: 320px;
-            height: 220px;
-            background-color: #E8D5D0;
-            border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
-
-        .envelope-flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #D9C0BA;
-            clip-path: polygon(0 0, 50% 55%, 100% 0);
-            transform-origin: top;
-            z-index: 2;
-            border-radius: 4px 4px 0 0;
-        }
-
-        .envelope-pocket {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60%;
-            background-color: #D9C0BA;
-            clip-path: polygon(0 100%, 0 40%, 50% 60%, 100% 40%, 100% 100%);
-            z-index: 3;
-        }
-
-        .envelope-card {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            height: 180px;
-            background-color: #FDFBF7;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #E8D5D0;
-            padding: 20px;
-        }
-
-        .wax-seal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            background-color: #C5A065;
-            border-radius: 50%;
-            z-index: 4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #FDFBF7;
+        h1, h2, h3, h4, .serif {
             font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            border: 2px solid #A6844A;
-        }
-
-        /* Utility & Animations */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(30px);
         }
         
-        .ornament {
-            color: #C5A065;
-            font-size: 2rem;
-            margin: 1rem 0;
+        /* Modern Envelope Styles */
+        #envelopeOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #FAF8F5 0%, #F0EAE0 100%);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+            overflow: hidden;
+        }
+        
+        .modern-card {
+            position: relative;
+            width: 340px;
+            height: 480px;
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 
+                0 25px 60px -12px rgba(0, 0, 0, 0.08),
+                0 0 0 1px rgba(212, 175, 55, 0.15);
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 48px 32px;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .modern-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #D4AF37, transparent);
         }
-        ::-webkit-scrollbar-track {
-            background: #FDFBF7;
+
+        .modern-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #D4AF37, transparent);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #C5A065;
-            border-radius: 4px;
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            width: 100%;
+        }
+
+        .monogram {
+            width: 70px;
+            height: 70px;
+            border: 1.5px solid #D4AF37;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: #D4AF37;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #FFFEF9 0%, #FFF8EB 100%);
+        }
+
+        .tap-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tap-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, #D4AF37, transparent);
+            animation: pulseLine 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseLine {
+            0%, 100% { opacity: 0.4; transform: scaleY(0.8); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        .tap-text {
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #9CA3AF;
+            font-weight: 300;
+        }
+
+        /* Subtle corner accents */
+        .corner-accent {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-color: #D4AF37;
+            border-style: solid;
+            opacity: 0.6;
+        }
+        .corner-tl { top: 20px; left: 20px; border-width: 1.5px 0 0 1.5px; border-radius: 4px 0 0 0; }
+        .corner-tr { top: 20px; right: 20px; border-width: 1.5px 1.5px 0 0; border-radius: 0 4px 0 0; }
+        .corner-bl { bottom: 20px; left: 20px; border-width: 0 0 1.5px 1.5px; border-radius: 0 0 0 4px; }
+        .corner-br { bottom: 20px; right: 20px; border-width: 0 1.5px 1.5px 0; border-radius: 0 0 4px 0; }
+
+        /* Main content reveal */
+        #mainContent {
+            opacity: 0;
+            visibility: hidden;
+            transform-origin: center top;
+        }
+
+        /* Scroll reveal animations */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .reveal-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom form styles */
+        .custom-radio {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D4AF37;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .custom-radio:checked {
+            background: #D4AF37;
+            box-shadow: inset 0 0 0 3px #FFFFFF;
+        }
+
+        .btn-gold {
+            background-color: #D4AF37;
+            color: white;
+            transition: all 0.3s;
+        }
+        .btn-gold:hover {
+            background-color: #B8962E;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="text-soft-black font-sans antialiased">
+<body class="antialiased">
 
-    <!-- Envelope Overlay -->
-    <div id="envelope-wrapper" class="envelope-wrapper">
-        <div class="text-center mb-12">
-            <p class="font-serif text-2xl md:text-3xl text-soft-black tracking-wide">You are invited</p>
-            <p class="font-sans text-sm md:text-base text-gray-500 mt-2 tracking-widest uppercase">To the wedding of Alex & Elena</p>
-        </div>
-        
-        <div id="envelope" class="envelope">
-            <div class="envelope-card">
-                <p class="font-serif text-xl text-soft-black">Save the Date</p>
-                <div class="w-8 h-[1px] bg-gold my-3"></div>
-                <p class="font-sans text-sm text-gray-600">June 14, 2026</p>
+    <!-- Modern Envelope Overlay -->
+    <div id="envelopeOverlay">
+        <div class="modern-card" id="envelopeTrigger">
+            <div class="corner-accent corner-tl"></div>
+            <div class="corner-accent corner-tr"></div>
+            <div class="corner-accent corner-bl"></div>
+            <div class="corner-accent corner-br"></div>
+            
+            <div class="card-content">
+                <div class="monogram">O&amp;S</div>
+                
+                <div class="text-center">
+                    <p class="text-[10px] tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Wedding Invitation</p>
+                    <h1 class="serif text-4xl text-[#2C2C2C] leading-tight mb-3">Oliver<br><span class="text-[#D4AF37] text-2xl mx-1 italic">&amp;</span><br>Sophia</h1>
+                    <div class="flex items-center justify-center gap-3 my-4">
+                        <div class="h-[1px] w-10 bg-[#D4AF37] opacity-60"></div>
+                        <span class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">20.06.26</span>
+                        <div class="h-[1px] w-10 bg-[#D4AF37] opacity-60"></div>
+                    </div>
+                </div>
+
+                <div class="tap-indicator">
+                    <div class="tap-line"></div>
+                    <p class="tap-text">Tap to open</p>
+                </div>
             </div>
-            <div class="envelope-pocket"></div>
-            <div class="envelope-flap"></div>
-            <div class="wax-seal">A&E</div>
         </div>
-
-        <button id="open-btn" class="mt-12 px-8 py-3 border border-soft-black text-soft-black font-serif tracking-widest uppercase text-sm hover:bg-soft-black hover:text-cream transition-all duration-500">
-            Open Invitation
-        </button>
     </div>
 
-    <!-- Main Website Content -->
-    <div id="main-site" class="hidden opacity-0">
+    <!-- Main Content -->
+    <main id="mainContent" class="w-full">
         
         <!-- Hero Section -->
-        <section class="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
-            <div class="absolute inset-0 bg-[url('https://image.qwenlm.ai/public_source/960b00d0-d637-4a4b-9db6-e7059f907887/1c1dcf0db-841d-4952-8863-08ac6c010eab.png')] bg-cover bg-center opacity-90"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-cream"></div>
-            
-            <div class="relative z-10 text-center px-4 mt-64 md:mt-0">
-                <p class="font-sans text-white/90 tracking-[0.3em] uppercase text-sm mb-4 fade-in-up">We are getting married</p>
-                <h1 class="font-serif text-6xl md:text-8xl lg:text-9xl text-white drop-shadow-lg fade-in-up">Alex & Elena</h1>
-                <div class="flex items-center justify-center gap-4 mt-6 fade-in-up">
-                    <div class="h-[1px] w-12 bg-white/80"></div>
-                    <span class="font-serif text-2xl md:text-3xl text-white/90">June 14, 2026</span>
-                    <div class="h-[1px] w-12 bg-white/80"></div>
-                </div>
-                <p class="font-sans text-white/80 mt-4 text-lg fade-in-up">Tuscany, Italy</p>
+        <section class="min-h-screen flex flex-col items-center justify-center relative py-20 px-6">
+            <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+                <div class="absolute top-10 left-10 w-64 h-64 bg-[#E8D5C4] rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+                <div class="absolute bottom-10 right-10 w-64 h-64 bg-[#D4AF37] rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
             </div>
 
-            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-soft-black">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            <div class="text-center mb-10 reveal-element">
+                <p class="text-sm tracking-[0.3em] text-[#D4AF37] uppercase mb-4">Together with their families</p>
+                <h1 class="serif text-5xl md:text-7xl text-[#2C2C2C] mb-4">Oliver <span class="text-[#D4AF37] text-4xl md:text-5xl align-middle mx-2 italic">&amp;</span> Sophia</h1>
+                <p class="serif text-xl md:text-2xl text-gray-600 italic">Invite you to celebrate their wedding</p>
+            </div>
+
+            <div class="relative w-full max-w-md mx-auto reveal-element">
+                <div class="absolute -inset-4 border border-[#D4AF37] opacity-40 transform rotate-2"></div>
+                <img src="https://image.qwenlm.ai/public_source/8ae4155d-db65-4b5b-84b9-649f1b84d66b/161e150f1-0cc9-42f3-9b98-4ee2a76e820e.png" 
+                     alt="Oliver and Sophia" 
+                     class="w-full h-[500px] object-cover shadow-2xl rounded-sm">
+            </div>
+
+            <div class="mt-12 text-center reveal-element">
+                <div class="flex items-center justify-center gap-4 mb-2">
+                    <div class="h-[1px] w-16 bg-[#D4AF37]"></div>
+                    <p class="serif text-3xl text-[#8B2635]">June 20, 2026</p>
+                    <div class="h-[1px] w-16 bg-[#D4AF37]"></div>
+                </div>
+                <p class="text-gray-500 tracking-widest text-sm">SATURDAY, FOUR O'CLOCK IN THE AFTERNOON</p>
             </div>
         </section>
 
         <!-- Love Story Section -->
-        <section class="py-24 px-6 md:px-12 bg-cream">
+        <section class="py-20 px-6 bg-[#F5EBE0]">
             <div class="max-w-3xl mx-auto text-center">
-                <div class="ornament"></div>
-                <h2 class="font-serif text-4xl md:text-5xl text-soft-black mb-8 fade-in-up">Our Love Story</h2>
-                <p class="font-sans text-lg md:text-xl text-gray-600 leading-relaxed fade-in-up">
-                    It all began with a serendipitous encounter at a small coffee shop in the heart of the city. 
-                    What started as a shared laugh over spilled lattes quickly blossomed into a deep connection 
-                    that neither of us could have predicted. Through countless adventures, quiet Sunday mornings, 
-                    and unwavering support, we discovered our forever in each other. Now, we are ready to begin 
-                    the next beautiful chapter of our journey together, and we would be honored to have you by our side.
-                </p>
-                <div class="ornament mt-8">❦</div>
+                <div class="reveal-element">
+                    <p class="text-sm tracking-[0.3em] text-[#D4AF37] uppercase mb-4">Our Love Story</p>
+                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C] mb-8">How It All Began</h2>
+                </div>
+                
+                <div class="space-y-8 text-lg text-gray-600 leading-relaxed reveal-element">
+                    <p>
+                        It was a rainy Tuesday evening in October when Oliver spilled his coffee on Sophia's favorite book at a small café downtown. 
+                        What started as an embarrassing apology turned into a three-hour conversation about poetry, dreams, and the best pizza in the city.
+                    </p>
+                    <p>
+                        From that day on, they were inseparable. Through cross-country moves, career changes, and countless Sunday mornings spent reading in bed, 
+                        their bond only grew stronger. Three years, countless memories, and one unforgettable sunset proposal later, 
+                        they are ready to begin their next chapter—together.
+                    </p>
+                </div>
+
+                <div class="mt-12 flex justify-center reveal-element">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </div>
             </div>
         </section>
 
         <!-- Details Section -->
-        <section class="py-24 px-6 md:px-12 bg-sage/10">
-            <div class="max-w-5xl mx-auto">
-                <div class="text-center mb-16">
-                    <h2 class="font-serif text-4xl md:text-5xl text-soft-black fade-in-up">Wedding Details</h2>
-                    <div class="w-16 h-[1px] bg-gold mx-auto mt-6"></div>
+        <section class="py-20 px-6">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16 reveal-element">
+                    <p class="text-sm tracking-[0.3em] text-[#D4AF37] uppercase mb-4">The Details</p>
+                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">When &amp; Where</h2>
                 </div>
-                
+
                 <div class="grid md:grid-cols-2 gap-12">
                     <!-- Date & Time -->
-                    <div class="bg-cream p-10 md:p-12 text-center shadow-sm border border-blush fade-in-up">
-                        <div class="text-gold text-4xl mb-4">
-                            <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <div class="text-center p-8 border border-[#E8D5C4] bg-white rounded-lg shadow-sm reveal-element">
+                        <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-[#F5EBE0] flex items-center justify-center">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
                         </div>
-                        <h3 class="font-serif text-2xl text-soft-black mb-2">The Date</h3>
-                        <p class="font-sans text-gray-600 text-lg">Sunday, June 14, 2026</p>
-                        <div class="my-6 w-12 h-[1px] bg-gold mx-auto"></div>
-                        <h3 class="font-serif text-2xl text-soft-black mb-2">The Time</h3>
-                        <p class="font-sans text-gray-600 text-lg">4:00 PM onwards</p>
+                        <h3 class="serif text-2xl mb-4">The Ceremony</h3>
+                        <p class="text-3xl text-[#8B2635] serif mb-2">June 20, 2026</p>
+                        <p class="text-gray-500 mb-4">4:00 PM</p>
+                        <div class="h-[1px] w-12 bg-[#D4AF37] mx-auto mb-4"></div>
+                        <p class="text-gray-600">Please arrive by 3:30 PM</p>
                     </div>
 
                     <!-- Location -->
-                    <div class="bg-cream p-10 md:p-12 text-center shadow-sm border border-blush fade-in-up">
-                        <div class="text-gold text-4xl mb-4">
-                            <svg class="w-10 h-10 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <div class="text-center p-8 border border-[#E8D5C4] bg-white rounded-lg shadow-sm reveal-element">
+                        <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-[#F5EBE0] flex items-center justify-center">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
                         </div>
-                        <h3 class="font-serif text-2xl text-soft-black mb-2">The Venue</h3>
-                        <p class="font-sans text-gray-600 text-lg">Villa Bellavista</p>
-                        <p class="font-sans text-gray-600 mt-1">Via delle Colline, 12<br>50022 Greve in Chianti<br>Tuscany, Italy</p>
-                        <a href="#" class="inline-block mt-6 text-sm font-sans tracking-widest uppercase border-b border-gold text-soft-black hover:text-gold transition-colors pb-1">View on Map</a>
+                        <h3 class="serif text-2xl mb-4">The Venue</h3>
+                        <p class="text-xl text-[#2C2C2C] serif mb-2">The Rosewood Estate</p>
+                        <p class="text-gray-500 mb-4">123 Botanical Garden Drive</p>
+                        <div class="h-[1px] w-12 bg-[#D4AF37] mx-auto mb-4"></div>
+                        <p class="text-gray-600">San Francisco, California</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- RSVP Section -->
-        <section class="py-24 px-6 md:px-12 bg-cream">
+        <section class="py-20 px-6 bg-[#F5EBE0]">
             <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="font-serif text-4xl md:text-5xl text-soft-black fade-in-up">Will You Join Us?</h2>
-                    <p class="font-sans text-gray-600 mt-4 fade-in-up">Please kindly respond by May 1, 2026</p>
-                    <div class="w-16 h-[1px] bg-gold mx-auto mt-6"></div>
+                <div class="text-center mb-12 reveal-element">
+                    <p class="text-sm tracking-[0.3em] text-[#D4AF37] uppercase mb-4">RSVP</p>
+                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">Will You Join Us?</h2>
+                    <p class="text-gray-500 mt-4">Please respond by May 20, 2026</p>
                 </div>
 
-                <div id="rsvp-form-container" class="bg-white p-8 md:p-12 shadow-md border-t-4 border-gold fade-in-up">
-                    <form id="rsvp-form" class="space-y-6">
-                        <div>
-                            <label class="block font-serif text-xl text-soft-black mb-3">Will you be attending?</label>
-                            <div class="flex flex-col sm:flex-row gap-4">
-                                <label class="flex items-center gap-3 cursor-pointer group">
-                                    <input type="radio" name="attending" value="yes" class="w-5 h-5 accent-gold" required>
-                                    <span class="font-sans text-gray-700 group-hover:text-gold transition-colors">Joyfully Accepts</span>
-                                </label>
-                                <label class="flex items-center gap-3 cursor-pointer group">
-                                    <input type="radio" name="attending" value="no" class="w-5 h-5 accent-gold">
-                                    <span class="font-sans text-gray-700 group-hover:text-gold transition-colors">Regretfully Declines</span>
-                                </label>
-                            </div>
+                <form id="rsvpForm" class="bg-white p-8 md:p-12 rounded-lg shadow-lg reveal-element">
+                    <div class="mb-8">
+                        <label class="block serif text-xl text-[#2C2C2C] mb-4">Can you attend the wedding?</label>
+                        <div class="flex gap-8">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="attendance" value="yes" class="custom-radio mr-3" id="rsvpYes">
+                                <span class="text-gray-700">Joyfully Accepts</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="attendance" value="no" class="custom-radio mr-3" id="rsvpNo">
+                                <span class="text-gray-700">Regretfully Declines</span>
+                            </label>
                         </div>
-
-                        <div id="members-container" class="hidden">
-                            <label class="block font-serif text-xl text-soft-black mb-3">Number of Members Attending</label>
-                            <select id="members" name="members" class="w-full p-3 border border-gray-300 rounded-none focus:outline-none focus:border-gold font-sans text-gray-700 bg-cream">
-                                <option value="1">1 Member</option>
-                                <option value="2">2 Members</option>
-                                <option value="3">3 Members</option>
-                                <option value="4">4 Members</option>
-                                <option value="5">5+ Members</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block font-serif text-xl text-soft-black mb-3">Your Name</label>
-                            <input type="text" name="name" required class="w-full p-3 border border-gray-300 rounded-none focus:outline-none focus:border-gold font-sans text-gray-700 bg-cream">
-                        </div>
-
-                        <div class="pt-4">
-                            <button type="submit" class="w-full py-4 bg-soft-black text-cream font-serif tracking-widest uppercase text-sm hover:bg-gold transition-colors duration-500">
-                                Send RSVP
-                            </button>
-                        </div>
-                    </form>
-
-                    <div id="success-message" class="hidden text-center py-10">
-                        <div class="text-gold text-5xl mb-4">✓</div>
-                        <h3 class="font-serif text-3xl text-soft-black mb-2">Thank You!</h3>
-                        <p class="font-sans text-gray-600">Your RSVP has been received. We look forward to celebrating with you.</p>
                     </div>
-                </div>
+
+                    <div id="membersSection" class="mb-8 hidden">
+                        <label class="block serif text-xl text-[#2C2C2C] mb-4">Number of Guests</label>
+                        <select id="membersCount" class="w-full p-3 border border-[#E8D5C4] rounded-md focus:outline-none focus:border-[#D4AF37] bg-[#FDFBF7]">
+                            <option value="1">1 Person</option>
+                            <option value="2">2 People</option>
+                            <option value="3">3 People</option>
+                            <option value="4">4 People</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-8">
+                        <label class="block serif text-xl text-[#2C2C2C] mb-4">Name(s)</label>
+                        <input type="text" id="guestName" placeholder="Enter your full name" class="w-full p-3 border border-[#E8D5C4] rounded-md focus:outline-none focus:border-[#D4AF37] bg-[#FDFBF7]">
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn-gold px-10 py-3 rounded-full serif text-lg tracking-wider uppercase shadow-md">
+                            Send RSVP
+                        </button>
+                    </div>
+
+                    <div id="successMessage" class="hidden mt-6 text-center p-4 bg-green-50 border border-green-200 rounded-md">
+                        <p class="text-green-800 serif text-xl">Thank you for your response!</p>
+                        <p class="text-gray-600 text-sm mt-2">We can't wait to celebrate with you.</p>
+                    </div>
+                </form>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="bg-soft-black text-cream py-12 text-center">
-            <h2 class="font-serif text-3xl mb-4">Alex & Elena</h2>
-            <p class="font-sans text-sm text-white/60 tracking-widest uppercase">June 14, 2026 • Tuscany</p>
-            <div class="w-8 h-[1px] bg-gold mx-auto my-6"></div>
-            <p class="font-sans text-xs text-white/40">Made with love</p>
+        <footer class="py-12 px-6 text-center bg-[#2C2C2C] text-white">
+            <h3 class="serif text-3xl mb-4">Oliver &amp; Sophia</h3>
+            <p class="text-gray-400 text-sm tracking-widest uppercase">June 20, 2026 • The Rosewood Estate</p>
+            <div class="mt-8 flex justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            </div>
+            <p class="text-gray-500 text-xs mt-6">Made with love</p>
         </footer>
-    </div>
+    </main>
 
     <script>
-        gsap.registerPlugin(ScrollTrigger);
+        // Modern Envelope Animation
+        const envelopeTrigger = document.getElementById('envelopeTrigger');
+        const envelopeOverlay = document.getElementById('envelopeOverlay');
+        const mainContent = document.getElementById('mainContent');
+        
+        let envelopeOpened = false;
 
-        // Envelope Animation
-        const openBtn = document.getElementById('open-btn');
-        const envelope = document.getElementById('envelope');
-        const envelopeWrapper = document.getElementById('envelope-wrapper');
-        const mainSite = document.getElementById('main-site');
+        envelopeTrigger.addEventListener('click', () => {
+            if (envelopeOpened) return;
+            envelopeOpened = true;
 
-        function openInvitation() {
             const tl = gsap.timeline();
 
-            // Wax seal breaks
-            tl.to('.wax-seal', { scale: 0, duration: 0.3, ease: "back.in(2)" })
-            // Flap opens
-              .to('.envelope-flap', { rotateX: 180, duration: 0.8, ease: "power2.inOut" })
-            // Card slides up slightly
-              .to('.envelope-card', { y: -80, duration: 0.6, ease: "power2.out" }, "-=0.4")
-            // Card scales up to fill screen
-              .to('.envelope-card', { 
-                  scale: 15, 
-                  opacity: 0, 
-                  duration: 1.2, 
-                  ease: "power3.inOut" 
-              })
-              .to('.envelope-flap, .envelope-pocket', { opacity: 0, duration: 0.5 }, "-=1")
-              .to('.envelope', { opacity: 0, duration: 0.5 }, "-=0.8")
-              .to('.envelope-wrapper', { opacity: 0, duration: 0.5, onComplete: () => {
-                  envelopeWrapper.style.display = 'none';
-              }}, "-=0.5")
-              .set(mainSite, { display: 'block' })
-              .to(mainSite, { opacity: 1, duration: 1 });
-
-            // Trigger scroll animations after envelope opens
-            tl.eventCallback("onComplete", initScrollAnimations);
-        }
-
-        openBtn.addEventListener('click', openInvitation);
-
-        function initScrollAnimations() {
-            // Reveal animations on scroll
-            const fadeElements = document.querySelectorAll('.fade-in-up');
-            
-            fadeElements.forEach((el) => {
-                gsap.fromTo(el, 
-                    { opacity: 0, y: 30 },
-                    { 
-                        opacity: 1, 
-                        y: 0, 
-                        duration: 1, 
-                        ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: el,
-                            start: "top 85%",
-                            toggleActions: "play none none none"
-                        }
-                    }
-                );
-            });
-        }
-
-        // RSVP Form Logic
-        const attendingRadios = document.querySelectorAll('input[name="attending"]');
-        const membersContainer = document.getElementById('members-container');
-        const rsvpForm = document.getElementById('rsvp-form');
-        const successMessage = document.getElementById('success-message');
-
-        attendingRadios.forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                if (e.target.value === 'yes') {
-                    membersContainer.classList.remove('hidden');
-                    gsap.fromTo(membersContainer, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.4, ease: "power2.out" });
-                } else {
-                    membersContainer.classList.add('hidden');
+            // Subtle lift
+            tl.to(envelopeTrigger, {
+                y: -10,
+                scale: 1.02,
+                duration: 0.35,
+                ease: "power2.out"
+            })
+            // Modern zoom-through reveal
+            .to(envelopeOverlay, {
+                scale: 1.15,
+                opacity: 0,
+                duration: 0.9,
+                ease: "power3.inOut",
+                onComplete: () => {
+                    envelopeOverlay.style.display = 'none';
+                    mainContent.style.visibility = 'visible';
+                    revealOnScroll();
                 }
-            });
+            }, "-=0.1")
+            // Main content enters with subtle scale
+            .from(mainContent, {
+                scale: 0.96,
+                opacity: 0,
+                duration: 0.9,
+                ease: "power3.out"
+            }, "-=0.8");
+        });
+
+        // RSVP Logic
+        const rsvpYes = document.getElementById('rsvpYes');
+        const rsvpNo = document.getElementById('rsvpNo');
+        const membersSection = document.getElementById('membersSection');
+        const rsvpForm = document.getElementById('rsvpForm');
+        const successMessage = document.getElementById('successMessage');
+
+        rsvpYes.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                membersSection.classList.remove('hidden');
+                gsap.fromTo(membersSection, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.4, ease: "power2.out" });
+            }
+        });
+
+        rsvpNo.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                gsap.to(membersSection, { 
+                    height: 0, 
+                    opacity: 0, 
+                    duration: 0.4, 
+                    ease: "power2.out", 
+                    onComplete: () => membersSection.classList.add('hidden') 
+                });
+            }
         });
 
         rsvpForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
-            // Simulate form submission
-            gsap.to(rsvpForm, { 
-                opacity: 0, 
-                height: 0, 
-                duration: 0.5, 
-                ease: "power2.inOut",
+            const attendance = document.querySelector('input[name="attendance"]:checked');
+            const guestName = document.getElementById('guestName').value;
+
+            if (!attendance) {
+                alert("Please select if you can attend.");
+                return;
+            }
+            if (!guestName.trim()) {
+                alert("Please enter your name.");
+                return;
+            }
+
+            // Hide form and show success
+            gsap.to(rsvpForm, {
+                opacity: 0,
+                y: -20,
+                duration: 0.4,
                 onComplete: () => {
                     rsvpForm.style.display = 'none';
                     successMessage.classList.remove('hidden');
-                    gsap.fromTo(successMessage, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" });
+                    gsap.from(successMessage, { opacity: 0, y: 20, duration: 0.6 });
                 }
+            });
+        });
+
+        // Scroll Reveal Animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal-element');
+            reveals.forEach((el) => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                const revealPoint = 120;
+
+                if (elementTop < windowHeight - revealPoint) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+
+        // Add subtle floating particles for modern aesthetic
+        function createParticles() {
+            const container = document.querySelector('#envelopeOverlay');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.background = Math.random() > 0.5 ? '#D4AF37' : '#E8D5C4';
+                particle.style.opacity = Math.random() * 0.4 + 0.1;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = (Math.random() * 100 + 100) + '%';
+                container.appendChild(particle);
+
+                gsap.to(particle, {
+                    y: -window.innerHeight * 2,
+                    x: (Math.random() - 0.5) * 150,
+                    duration: Math.random() * 12 + 12,
+                    repeat: -1,
+                    ease: "none",
+                    delay: Math.random() * 8
+                });
+            }
+        }
+
+        // Initial entrance animation for envelope
+        window.addEventListener('load', () => {
+            createParticles();
+            gsap.from(envelopeTrigger, {
+                scale: 0.9,
+                y: 20,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power3.out",
+                delay: 0.2
             });
         });
     </script>
