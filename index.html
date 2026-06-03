@@ -1,10 +1,10 @@
 ```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hy">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oliver & Sophia | Wedding Invitation</title>
+    <title>Վարդան & Մերի | Հարսանյաց Հրավեր</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -23,7 +23,6 @@
             font-family: 'Playfair Display', serif;
         }
         
-        /* Full Screen Envelope Overlay */
         #envelopeOverlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -36,7 +35,6 @@
             overflow: hidden;
         }
 
-        /* Subtle paper texture */
         #envelopeOverlay::before {
             content: '';
             position: absolute;
@@ -53,7 +51,6 @@
             transform-style: preserve-3d;
         }
 
-        /* The 4 Flaps */
         .flap {
             position: absolute;
             background: linear-gradient(135deg, #D4B896 0%, #B8895E 100%);
@@ -90,7 +87,6 @@
             background: linear-gradient(270deg, #C49A6C 0%, #A87D52 100%);
         }
 
-        /* Inner card visible after flaps open */
         .inner-card {
             position: absolute;
             top: 50%; left: 50%;
@@ -131,8 +127,8 @@
             color: #D4AF37;
             font-family: 'Playfair Display', serif;
             font-weight: bold;
-            font-size: 28px;
-            letter-spacing: 2px;
+            font-size: 26px;
+            letter-spacing: 1px;
             box-shadow: 
                 inset 0 3px 6px rgba(255,255,255,0.4),
                 inset 0 -3px 6px rgba(0,0,0,0.4),
@@ -155,13 +151,13 @@
         }
 
         .wax-seal::after {
-            content: 'Tap to Open';
+            content: 'Սեղմեք բացելու համար';
             position: absolute;
             bottom: -40px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 12px;
-            letter-spacing: 3px;
+            font-size: 11px;
+            letter-spacing: 2px;
             text-transform: uppercase;
             color: #8B2635;
             white-space: nowrap;
@@ -175,13 +171,11 @@
             50% { opacity: 1; }
         }
 
-        /* Main content reveal */
         #mainContent {
             opacity: 0;
             visibility: hidden;
         }
 
-        /* Scroll reveal animations */
         .reveal-element {
             opacity: 0;
             transform: translateY(40px);
@@ -202,7 +196,6 @@
             transform: scale(1);
         }
 
-        /* Custom form styles */
         .custom-radio {
             appearance: none;
             -webkit-appearance: none;
@@ -243,14 +236,12 @@
             box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
         }
 
-        /* Floating particles */
         .particle {
             position: absolute;
             border-radius: 50%;
             pointer-events: none;
         }
 
-        /* Decorative divider */
         .ornament {
             display: flex;
             align-items: center;
@@ -263,7 +254,22 @@
             background: linear-gradient(90deg, transparent, #D4AF37, transparent);
         }
 
-        /* Timeline Styles */
+        .photo-frame {
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .photo-frame:hover {
+            transform: translateY(-8px);
+        }
+        .photo-frame img {
+            transition: transform 0.8s ease;
+        }
+        .photo-frame:hover img {
+            transform: scale(1.05);
+        }
+
         .timeline-container {
             position: relative;
             max-width: 800px;
@@ -319,18 +325,14 @@
         }
 
         @media (max-width: 768px) {
-            .timeline-line {
-                left: 20px;
-            }
+            .timeline-line { left: 20px; }
             .timeline-item {
                 width: 100%;
                 padding-left: 60px;
                 padding-right: 20px;
                 text-align: left !important;
             }
-            .timeline-item.left, .timeline-item.right {
-                left: 0;
-            }
+            .timeline-item.left, .timeline-item.right { left: 0; }
             .timeline-dot {
                 left: 10px !important;
                 right: auto !important;
@@ -341,7 +343,6 @@
             }
         }
 
-        /* Subtle shimmer on hero */
         @keyframes shimmer {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
@@ -367,18 +368,18 @@
             <div class="flap flap-right" id="flapRight"></div>
             
             <div class="inner-card" id="innerCard">
-                <p class="text-[10px] tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Wedding Invitation</p>
-                <h2 class="serif text-5xl text-[#2C2C2C] mb-3 text-center">Oliver<br><span class="text-[#D4AF37] text-3xl italic">&amp;</span><br>Sophia</h2>
+                <p class="text-[10px] tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Հարսանյաց Հրավեր</p>
+                <h2 class="serif text-5xl text-[#2C2C2C] mb-3 text-center">Վարդան<br><span class="text-[#D4AF37] text-3xl italic">&amp;</span><br>Մերի</h2>
                 <div class="ornament my-4">
                     <div class="ornament-line"></div>
                     <span class="text-[10px] tracking-[0.3em] text-gray-400 uppercase">20.06.26</span>
                     <div class="ornament-line"></div>
                 </div>
-                <p class="serif text-lg text-gray-600 italic">The Rosewood Estate</p>
+                <p class="serif text-lg text-gray-600 italic">Ռոզվուդ Էստեյթ</p>
             </div>
 
             <div class="wax-seal" id="waxSeal">
-                <span>O&amp;S</span>
+                <span>Վ&amp;Մ</span>
             </div>
         </div>
     </div>
@@ -394,29 +395,46 @@
                 <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-[#F5EBE0] rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2"></div>
             </div>
 
-            <div class="text-center mb-10 reveal-element">
-                <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Together with their families</p>
+            <div class="text-center mb-14 reveal-element">
+                <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Իրենց ընտանիքների հետ</p>
                 <h1 class="serif text-5xl md:text-7xl text-[#2C2C2C] mb-4 leading-tight">
-                    Oliver <span class="shimmer-text text-4xl md:text-5xl align-middle mx-2 italic">&amp;</span> Sophia
+                    արդան <span class="shimmer-text text-4xl md:text-5xl align-middle mx-2 italic">&amp;</span> Մերի
                 </h1>
-                <p class="serif text-xl md:text-2xl text-gray-600 italic">Invite you to celebrate their wedding</p>
+                <p class="serif text-xl md:text-2xl text-gray-600 italic">Հրավիրում են եզ տոնելու իրենց հարսանիքը</p>
             </div>
 
-            <div class="relative w-full max-w-md mx-auto reveal-image">
-                <div class="absolute -inset-4 border border-[#D4AF37] opacity-40 transform rotate-2"></div>
-                <div class="absolute -inset-4 border border-[#D4AF37] opacity-40 transform -rotate-2"></div>
-                <img src="https://image.qwenlm.ai/public_source/8ae4155d-db65-4b5b-84b9-649f1b84d66b/18f6b7164-37d6-4780-b4fe-68cc804c2b23.png" 
-                     alt="Oliver and Sophia" 
-                     class="w-full h-[520px] object-cover shadow-2xl rounded-sm relative z-10">
+            <!-- Dual Photo Gallery -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto w-full px-6 mb-12">
+                <!-- Photo 1: Dancing -->
+                <div class="reveal-image photo-frame">
+                    <div class="absolute -inset-3 border border-[#D4AF37] opacity-50 transform rotate-2 z-0"></div>
+                    <img src="https://image.qwenlm.ai/public_source/8ae4155d-db65-4b5b-84b9-649f1b84d66b/1766b4c9c-a444-4314-be76-c9d266d32554.png" 
+                         alt="Վարդան և Մերի" 
+                         class="w-full h-[560px] object-cover rounded-sm relative z-10">
+                    <div class="absolute bottom-6 left-6 right-6 z-20 bg-white/90 backdrop-blur-sm p-4 rounded shadow-lg">
+                        <p class="serif text-lg text-[#8B2635] italic text-center">Մեր Առաջին Պարը</p>
+                    </div>
+                </div>
+
+                <!-- Photo 2: Cake -->
+                <div class="reveal-image photo-frame" style="transition-delay: 0.3s;">
+                    <div class="absolute -inset-3 border border-[#D4AF37] opacity-50 transform -rotate-2 z-0"></div>
+                    <img src="https://image.qwenlm.ai/public_source/8ae4155d-db65-4b5b-84b9-649f1b84d66b/168d751c0-f6d1-4d5c-ba1b-672cb721ff74.png" 
+                         alt="Վարդան և Մերի" 
+                         class="w-full h-[560px] object-cover rounded-sm relative z-10">
+                    <div class="absolute bottom-6 left-6 right-6 z-20 bg-white/90 backdrop-blur-sm p-4 rounded shadow-lg">
+                        <p class="serif text-lg text-[#8B2635] italic text-center">Հարսանյաց Տորթը</p>
+                    </div>
+                </div>
             </div>
 
-            <div class="mt-12 text-center reveal-element">
+            <div class="mt-8 text-center reveal-element">
                 <div class="ornament mb-3">
                     <div class="ornament-line"></div>
-                    <p class="serif text-3xl text-[#8B2635]">June 20, 2026</p>
+                    <p class="serif text-3xl text-[#8B2635]">Հունիսի 20, 2026</p>
                     <div class="ornament-line"></div>
                 </div>
-                <p class="text-gray-500 tracking-[0.3em] text-xs uppercase">Saturday, Four O'Clock in the Afternoon</p>
+                <p class="text-gray-500 tracking-[0.3em] text-xs uppercase">Շաբաթ, րեկոյան Չորսին</p>
             </div>
         </section>
 
@@ -425,20 +443,20 @@
             <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-40"></div>
             <div class="max-w-3xl mx-auto text-center relative z-10">
                 <div class="reveal-element">
-                    <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Our Love Story</p>
-                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C] mb-10">How It All Began</h2>
+                    <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Մեր Սիրո Պատմությունը</p>
+                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C] mb-10">նչպես Ամեն նչ Սկսվեց</h2>
                 </div>
                 
                 <div class="space-y-8 text-lg text-gray-600 leading-relaxed reveal-element">
-                    <p class="serif text-xl italic text-[#8B2635]">"It was a rainy Tuesday evening in October..."</p>
+                    <p class="serif text-xl italic text-[#8B2635]">«ա հոկտեմբերի մի անձրևոտ երեքշաբթի երեկո էր...»</p>
                     <p>
-                        Oliver spilled his coffee on Sophia's favorite book at a small café downtown. 
-                        What started as an embarrassing apology turned into a three-hour conversation about poetry, dreams, and the best pizza in the city.
+                        Վարդանը սուրը թափեց Մերիի սիրելի գրքի վրա քաղաքի կենտրոնի փոքրիկ սրճարանում։ 
+                        Ինչը սկսվեց որպես ամոթալի ներողություն, վերածվեց երեք ժամ տևող զրույցի պոեզիայի, երազանքների և քաղաքի լավագույն պիցցայի մասին։
                     </p>
                     <p>
-                        From that day on, they were inseparable. Through cross-country moves, career changes, and countless Sunday mornings spent reading in bed, 
-                        their bond only grew stronger. Three years, countless memories, and one unforgettable sunset proposal later, 
-                        they are ready to begin their next chapter—together.
+                        Այդ օրվանից նրանք անբաժան էին։ Միջքաղաքային տեղափոխությունների, կարիերայի փոփոխությունների և անհամար կիրակի առավոտների ընթացքում, 
+                        որոնք անցկացվեցին մահճակալում գիրք կարդալով, նրանց կապն ավելի ու ավելի ամրապնդվեց։ Երեք տարի, անհամար հիշողություններ և մեկ անմոռանալի մայրամուտի առաջարկությունից հետո, 
+                        արդանն ու Մերին պատրաստ են սկսել իրենց հաջորդ գլուխը՝ միասին։
                     </p>
                 </div>
 
@@ -459,51 +477,47 @@
         <section class="py-24 px-6 relative overflow-hidden" id="timetableSection">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-20 reveal-element">
-                    <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">The Journey</p>
-                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">Wedding Day Timeline</h2>
-                    <p class="text-gray-500 mt-4 italic max-w-xl mx-auto">Join us as we celebrate our love, step by step, from morning preparations to the evening reception.</p>
+                    <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Ճանապարհը</p>
+                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">Հարսանյաց Օրվա Ժամանակացույց</h2>
+                    <p class="text-gray-500 mt-4 italic max-w-xl mx-auto">իացեք մեզ, երբ տոնում ենք մեր սերը՝ քայլ առ քայլ, առավոտյան պատրաստություններից մինչև երեկոյան ընդունելությունը։</p>
                 </div>
 
                 <div class="timeline-container">
                     <div class="timeline-line" id="timelineLine"></div>
 
-                    <!-- Stop 1 -->
                     <div class="timeline-item left" data-timeline>
                         <div class="timeline-dot"></div>
                         <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#D4AF37] hover:shadow-xl transition-shadow duration-300">
-                            <p class="text-[#D4AF37] font-bold tracking-widest text-sm mb-2">10:00 AM</p>
-                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Groom's Home</h3>
-                            <p class="text-gray-600 text-sm">Getting ready, final touches, and a toast with the groomsmen.</p>
+                            <p class="text-[#D4AF37] font-bold tracking-widest text-sm mb-2">10:00 ԱՄ</p>
+                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Փեսայի Տունը</h3>
+                            <p class="text-gray-600 text-sm">Վարդանը պատրաստվում է, վերջին շտկումներ և բաժակաճառ ընկերների հետ։</p>
                         </div>
                     </div>
 
-                    <!-- Stop 2 -->
                     <div class="timeline-item right" data-timeline>
                         <div class="timeline-dot"></div>
                         <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#8B2635] hover:shadow-xl transition-shadow duration-300">
-                            <p class="text-[#8B2635] font-bold tracking-widest text-sm mb-2">11:30 AM</p>
-                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Bride's Home</h3>
-                            <p class="text-gray-600 text-sm">The first look, emotional moments, and capturing the magic with the bridesmaids.</p>
+                            <p class="text-[#8B2635] font-bold tracking-widest text-sm mb-2">11:30 ԱՄ</p>
+                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Հարսնացուի Տունը</h3>
+                            <p class="text-gray-600 text-sm">Առաջին հանդիպումը Մերիի հետ, հուզական պահեր և կախարդանքի գրավում ընկերուհիների հետ։</p>
                         </div>
                     </div>
 
-                    <!-- Stop 3 -->
                     <div class="timeline-item left" data-timeline>
                         <div class="timeline-dot"></div>
                         <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#D4AF37] hover:shadow-xl transition-shadow duration-300">
-                            <p class="text-[#D4AF37] font-bold tracking-widest text-sm mb-2">2:00 PM</p>
-                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Church Ceremony</h3>
-                            <p class="text-gray-600 text-sm">Exchanging vows and rings at St. Andrew's Cathedral. Please be seated by 1:45 PM.</p>
+                            <p class="text-[#D4AF37] font-bold tracking-widest text-sm mb-2">14:00 ՊՄ</p>
+                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Եկեղեցական Ծիսակատարություն</h3>
+                            <p class="text-gray-600 text-sm">Վարդանն ու Մերին փոխանակում են երդումներն ու մատանիները Սուրբ Անդրեասի տաճարում։ Խնդրում ենք նստել մինչև 13:45։</p>
                         </div>
                     </div>
 
-                    <!-- Stop 4 -->
                     <div class="timeline-item right" data-timeline>
                         <div class="timeline-dot"></div>
                         <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-[#8B2635] hover:shadow-xl transition-shadow duration-300">
-                            <p class="text-[#8B2635] font-bold tracking-widest text-sm mb-2">4:00 PM</p>
-                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Reception Hall</h3>
-                            <p class="text-gray-600 text-sm">Cocktails, dinner, dancing, and celebrating at The Rosewood Estate.</p>
+                            <p class="text-[#8B2635] font-bold tracking-widest text-sm mb-2">16:00 ՊՄ</p>
+                            <h3 class="serif text-2xl text-[#2C2C2C] mb-2">Ընդունելության Սրահ</h3>
+                            <p class="text-gray-600 text-sm">Կոկտեյլներ, ընթրիք, պարեր և տոնակատարություն Վարդանի ու Մերիի հետ Ռոզվուդ ստեյթում։</p>
                         </div>
                     </div>
                 </div>
@@ -514,12 +528,11 @@
         <section class="py-24 px-6 bg-[#F5EBE0]">
             <div class="max-w-4xl mx-auto">
                 <div class="text-center mb-16 reveal-element">
-                    <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">The Details</p>
-                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">When &amp; Where</h2>
+                    <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Մանրամասներ</p>
+                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">Ե՞րբ և րտե՞ղ</h2>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-10">
-                    <!-- Date & Time -->
                     <div class="text-center p-10 border border-[#E8D5C4] bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-500 reveal-element group">
                         <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#F5EBE0] to-[#E8D5C4] flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5">
@@ -529,16 +542,15 @@
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                             </svg>
                         </div>
-                        <h3 class="serif text-2xl mb-4 text-[#2C2C2C]">The Ceremony</h3>
-                        <p class="text-3xl text-[#8B2635] serif mb-2">June 20, 2026</p>
-                        <p class="text-gray-500 mb-4 tracking-wider">4:00 PM</p>
+                        <h3 class="serif text-2xl mb-4 text-[#2C2C2C]">Ծիսակատարությունը</h3>
+                        <p class="text-3xl text-[#8B2635] serif mb-2">Հունիսի 20, 2026</p>
+                        <p class="text-gray-500 mb-4 tracking-wider">16:00 Մ</p>
                         <div class="ornament my-4">
                             <div class="ornament-line w-12"></div>
                         </div>
-                        <p class="text-gray-600 italic">Please arrive by 3:30 PM</p>
+                        <p class="text-gray-600 italic">Խնդրում ենք ժամանել մինչև 15:30</p>
                     </div>
 
-                    <!-- Location -->
                     <div class="text-center p-10 border border-[#E8D5C4] bg-white rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-500 reveal-element group">
                         <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-[#F5EBE0] to-[#E8D5C4] flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5">
@@ -546,13 +558,13 @@
                                 <circle cx="12" cy="10" r="3"></circle>
                             </svg>
                         </div>
-                        <h3 class="serif text-2xl mb-4 text-[#2C2C2C]">The Venue</h3>
-                        <p class="text-xl text-[#2C2C2C] serif mb-2">The Rosewood Estate</p>
-                        <p class="text-gray-500 mb-4">123 Botanical Garden Drive</p>
+                        <h3 class="serif text-2xl mb-4 text-[#2C2C2C]">Վայրը</h3>
+                        <p class="text-xl text-[#2C2C2C] serif mb-2">Ռոզվուդ Էստեյթ</p>
+                        <p class="text-gray-500 mb-4">123 Բուսաբանական Այգու Պողոտա</p>
                         <div class="ornament my-4">
                             <div class="ornament-line w-12"></div>
                         </div>
-                        <p class="text-gray-600 italic">San Francisco, California</p>
+                        <p class="text-gray-600 italic">ան Ֆրանցիսկո, Կալիոռնիա</p>
                     </div>
                 </div>
             </div>
@@ -563,50 +575,50 @@
             <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-40"></div>
             <div class="max-w-2xl mx-auto relative z-10">
                 <div class="text-center mb-12 reveal-element">
-                    <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">RSVP</p>
-                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">Will You Join Us?</h2>
-                    <p class="text-gray-500 mt-4 italic">Please respond by May 20, 2026</p>
+                    <p class="text-sm tracking-[0.4em] text-[#D4AF37] uppercase mb-4 font-light">Պատասխան</p>
+                    <h2 class="serif text-4xl md:text-5xl text-[#2C2C2C]">Կմիանա՞ք Մեզ</h2>
+                    <p class="text-gray-500 mt-4 italic">Խնդրում ենք պատասխանել մինչև մայիսի 20, 2026</p>
                 </div>
 
                 <form id="rsvpForm" class="bg-white p-8 md:p-12 rounded-lg shadow-xl reveal-element">
                     <div class="mb-8">
-                        <label class="block serif text-xl text-[#2C2C2C] mb-5">Can you attend the wedding?</label>
+                        <label class="block serif text-xl text-[#2C2C2C] mb-5">Կկարողանա՞ք ներկա գտնվել հարսանիքին</label>
                         <div class="flex flex-wrap gap-8">
                             <label class="flex items-center cursor-pointer group">
                                 <input type="radio" name="attendance" value="yes" class="custom-radio mr-3" id="rsvpYes">
-                                <span class="text-gray-700 group-hover:text-[#8B2635] transition-colors">Joyfully Accepts</span>
+                                <span class="text-gray-700 group-hover:text-[#8B2635] transition-colors">Ուրախությամբ Ընդունում Եմ</span>
                             </label>
                             <label class="flex items-center cursor-pointer group">
                                 <input type="radio" name="attendance" value="no" class="custom-radio mr-3" id="rsvpNo">
-                                <span class="text-gray-700 group-hover:text-[#8B2635] transition-colors">Regretfully Declines</span>
+                                <span class="text-gray-700 group-hover:text-[#8B2635] transition-colors">ավոք Հրաժարվում Եմ</span>
                             </label>
                         </div>
                     </div>
 
                     <div id="membersSection" class="mb-8 hidden">
-                        <label class="block serif text-xl text-[#2C2C2C] mb-4">Number of Guests</label>
+                        <label class="block serif text-xl text-[#2C2C2C] mb-4">Հյուրերի Քանակ</label>
                         <select id="membersCount" class="w-full p-3 border border-[#E8D5C4] rounded-md focus:outline-none focus:border-[#D4AF37] bg-[#FDFBF7] transition-colors">
-                            <option value="1">1 Person</option>
-                            <option value="2">2 People</option>
-                            <option value="3">3 People</option>
-                            <option value="4">4 People</option>
+                            <option value="1">1 Հոգի</option>
+                            <option value="2">2 Հոգի</option>
+                            <option value="3">3 Հոգի</option>
+                            <option value="4">4 Հոգի</option>
                         </select>
                     </div>
 
                     <div class="mb-8">
-                        <label class="block serif text-xl text-[#2C2C2C] mb-4">Name(s)</label>
-                        <input type="text" id="guestName" placeholder="Enter your full name" class="w-full p-3 border border-[#E8D5C4] rounded-md focus:outline-none focus:border-[#D4AF37] bg-[#FDFBF7] transition-colors">
+                        <label class="block serif text-xl text-[#2C2C2C] mb-4">Անուն(ներ)</label>
+                        <input type="text" id="guestName" placeholder="Մուտքագրեք Ձեր լրիվ անունը" class="w-full p-3 border border-[#E8D5C4] rounded-md focus:outline-none focus:border-[#D4AF37] bg-[#FDFBF7] transition-colors">
                     </div>
 
                     <div class="text-center">
                         <button type="submit" class="btn-gold px-12 py-4 rounded-full serif text-lg tracking-wider uppercase shadow-md">
-                            Send RSVP
+                            Ուղարկել
                         </button>
                     </div>
 
                     <div id="successMessage" class="hidden mt-6 text-center p-6 bg-green-50 border border-green-200 rounded-md">
-                        <p class="text-green-800 serif text-2xl mb-2">Thank you!</p>
-                        <p class="text-gray-600">We can't wait to celebrate with you.</p>
+                        <p class="text-green-800 serif text-2xl mb-2">Շնորհակալություն!</p>
+                        <p class="text-gray-600">Անհամբեր սպասում ենք տոնելու Ձեզ հետ։</p>
                     </div>
                 </form>
             </div>
@@ -616,21 +628,20 @@
         <!-- Footer -->
         <footer class="py-16 px-6 text-center bg-[#2C2C2C] text-white relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-60"></div>
-            <h3 class="serif text-4xl mb-4 shimmer-text">Oliver &amp; Sophia</h3>
-            <p class="text-gray-400 text-sm tracking-[0.3em] uppercase">June 20, 2026 • The Rosewood Estate</p>
+            <h3 class="serif text-4xl mb-4 shimmer-text">Վարդան &amp; Մերի</h3>
+            <p class="text-gray-400 text-sm tracking-[0.3em] uppercase">Հունիսի 20, 2026 • Ռոզվուդ Էստեյթ</p>
             <div class="mt-8 flex justify-center">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.5">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                 </svg>
             </div>
-            <p class="text-gray-500 text-xs mt-6 tracking-widest">Made with love</p>
+            <p class="text-gray-500 text-xs mt-6 tracking-widest">Սիրով պատրաստված</p>
         </footer>
     </main>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // Full Screen Envelope Animation
         const envelopeOverlay = document.getElementById('envelopeOverlay');
         const envelopeFull = document.getElementById('envelopeFull');
         const flapTop = document.getElementById('flapTop');
@@ -651,7 +662,6 @@
 
             const tl = gsap.timeline();
 
-            // 1. Seal cracks and shrinks
             tl.to(waxSeal, {
                 scale: 0,
                 opacity: 0,
@@ -659,9 +669,7 @@
                 duration: 0.6,
                 ease: "back.in(3)"
             })
-            // Particle burst
             .call(() => createBurst(), null, "-=0.3")
-            // 2. Flaps open outward
             .to(flapTop, {
                 rotationX: -180,
                 duration: 1.2,
@@ -682,28 +690,23 @@
                 duration: 1.2,
                 ease: "power3.inOut"
             }, "<")
-            // 3. Inner card fades in and scales up
             .to(innerCard, {
                 opacity: 1,
                 scale: 1,
                 duration: 0.8,
                 ease: "back.out(1.7)"
             }, "-=0.8")
-            // 4. Pause to admire
             .to({}, { duration: 0.8 })
-            // 5. Card scales massively to fill screen
             .to(innerCard, {
                 scale: 25,
                 opacity: 0,
                 duration: 1.2,
                 ease: "power2.inOut"
             })
-            // 6. Flaps fade out
             .to([flapTop, flapBottom, flapLeft, flapRight], {
                 opacity: 0,
                 duration: 0.8
             }, "<")
-            // 7. Overlay fades and reveals main content
             .to(envelopeOverlay, {
                 opacity: 0,
                 duration: 0.8,
@@ -718,7 +721,6 @@
             }, "-=0.4");
         }
 
-        // Golden particle burst
         function createBurst() {
             const container = document.querySelector('#envelopeOverlay');
             const centerX = window.innerWidth / 2;
@@ -752,12 +754,10 @@
             }
         }
 
-        // Timeline Animation with ScrollTrigger
         function initTimeline() {
             const timelineLine = document.getElementById('timelineLine');
             const timelineItems = document.querySelectorAll('[data-timeline]');
 
-            // Animate the central line growing
             gsap.to(timelineLine, {
                 height: '100%',
                 ease: 'none',
@@ -769,7 +769,6 @@
                 }
             });
 
-            // Animate each timeline item popping in
             timelineItems.forEach((item, index) => {
                 const isLeft = item.classList.contains('left');
                 
@@ -792,7 +791,6 @@
                     }
                 );
 
-                // Animate the dot
                 const dot = item.querySelector('.timeline-dot');
                 gsap.fromTo(dot,
                     { scale: 0 },
@@ -809,7 +807,6 @@
             });
         }
 
-        // RSVP Logic
         const rsvpYes = document.getElementById('rsvpYes');
         const rsvpNo = document.getElementById('rsvpNo');
         const membersSection = document.getElementById('membersSection');
@@ -841,11 +838,11 @@
             const guestName = document.getElementById('guestName').value;
 
             if (!attendance) {
-                alert("Please select if you can attend.");
+                alert("Խնդրում ենք ընտրել, ե կկարողանա՞ք ներկա գտնվել։");
                 return;
             }
             if (!guestName.trim()) {
-                alert("Please enter your name.");
+                alert("Խնդրում ենք մուտքագրել Ձեր անունը։");
                 return;
             }
 
@@ -861,7 +858,6 @@
             });
         });
 
-        // Scroll Reveal Animation
         function revealOnScroll() {
             const reveals = document.querySelectorAll('.reveal-element, .reveal-image');
             reveals.forEach((el) => {
@@ -877,7 +873,6 @@
 
         window.addEventListener('scroll', revealOnScroll);
 
-        // Floating ambient particles for envelope background
         function createAmbientParticles() {
             const container = document.querySelector('#envelopeOverlay');
             for (let i = 0; i < 30; i++) {
@@ -904,7 +899,6 @@
             }
         }
 
-        // Initial entrance animation
         window.addEventListener('load', () => {
             createAmbientParticles();
             gsap.from(envelopeFull, {
@@ -920,7 +914,6 @@
                 ease: "back.out(1.7)",
                 delay: 0.8
             });
-            // Subtle hover float for the seal
             gsap.to(waxSeal, {
                 y: -8,
                 duration: 2,
