@@ -2,1062 +2,1102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You're Invited | Wedding Invitation</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --cream: #fdfbf7;
-            --parchment: #f4f1ea;
-            --envelope-bg: #e6dcc8;
-            --envelope-dark: #d4c8b2;
-            --envelope-mid: #ddd2be;
-            --sepia: #5c4b37;
-            --sepia-light: #8b7355;
-            --gold: #d4af37;
-            --gold-light: #f4d03f;
-            --wax-red: #8b0000;
-            --wax-dark: #600000;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Cormorant Garamond', serif;
-            background-color: var(--cream);
-            color: var(--sepia);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* ================= BACKGROUND PARTICLES ================= */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
-            border-radius: 50%;
-            opacity: 0;
-            animation: floatUp 10s infinite ease-in-out;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.6; }
-            80% { opacity: 0.3; }
-            100% { transform: translateY(-10vh) scale(1.5) rotate(360deg); opacity: 0; }
-        }
-
-        /* ================= ENVELOPE STYLES ================= */
-        .envelope-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle at center, #f0e6d2 0%, #d4c5b0 100%);
-            z-index: 1000;
-            transition: opacity 1s ease, visibility 1s ease;
-        }
-
-        .envelope-wrapper.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .envelope-container {
-            width: 85vw;
-            max-width: 600px;
-            aspect-ratio: 3/2;
-            position: relative;
-            cursor: pointer;
-            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.25));
-            animation: envelopeIdle 4s ease-in-out infinite;
-            transition: transform 0.3s ease;
-        }
-
-        .envelope-container:hover {
-            animation: none;
-            transform: scale(1.02);
-        }
-
-        @keyframes envelopeIdle {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(0.5deg); }
-        }
-
-        .envelope-container.shake {
-            animation: envelopeShake 0.6s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        @keyframes envelopeShake {
-            10%, 90% { transform: translate3d(-1px, 0, 0) rotate(-1deg); }
-            20%, 80% { transform: translate3d(2px, 0, 0) rotate(2deg); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0) rotate(-4deg); }
-            40%, 60% { transform: translate3d(4px, 0, 0) rotate(4deg); }
-        }
-
-        .env-back {
-            position: absolute;
-            inset: 0;
-            background: var(--envelope-bg);
-            border-radius: 6px;
-        }
-
-        .env-left, .env-right {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 50%;
-            background: var(--envelope-dark);
-            z-index: 2;
-        }
-
-        .env-left { 
-            left: 0; 
-            clip-path: polygon(0 0, 100% 50%, 0 100%); 
-        }
-        
-        .env-right { 
-            right: 0; 
-            clip-path: polygon(100% 0, 0 50%, 100% 100%); 
-        }
-
-        .env-bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 65%;
-            background: var(--parchment);
-            z-index: 3;
-            clip-path: polygon(0 100%, 50% 30%, 100% 100%);
-            border-radius: 0 0 6px 6px;
-            border-top: 1px solid rgba(255,255,255,0.4);
-        }
-
-        .env-top {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 65%;
-            background: var(--envelope-mid);
-            z-index: 4;
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            transform-origin: top;
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 6px 6px 0 0;
-        }
-
-        .envelope-container.open .env-top {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-
-        .wax-seal {
-            position: absolute;
-            top: 42%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle at 35% 35%, #a52a2a, var(--wax-red), var(--wax-dark));
-            border-radius: 50%;
-            z-index: 5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 
-                0 6px 12px rgba(0,0,0,0.4), 
-                inset 0 2px 4px rgba(255,255,255,0.3),
-                inset 0 -2px 4px rgba(0,0,0,0.3);
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px dashed rgba(255,255,255,0.15);
-            animation: sealGlow 3s infinite alternate;
-        }
-
-        @keyframes sealGlow {
-            from { box-shadow: 0 6px 12px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.2); }
-            to { box-shadow: 0 6px 20px rgba(139, 0, 0, 0.6), inset 0 2px 4px rgba(255,255,255,0.4); }
-        }
-
-        .wax-seal::before {
-            content: '';
-            position: absolute;
-            inset: 6px;
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            border-radius: 50%;
-        }
-
-        .wax-seal span {
-            font-family: 'Great Vibes', cursive;
-            color: var(--gold);
-            font-size: 32px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-            margin-top: 4px;
-        }
-
-        .envelope-container.open .wax-seal {
-            transform: translate(-50%, -50%) scale(0) rotate(180deg);
-            opacity: 0;
-        }
-
-        .env-card {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 85%;
-            height: 80%;
-            background: var(--cream);
-            border: 1px solid var(--gold);
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
-        }
-
-        .env-card h3 {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.2rem;
-            color: var(--sepia);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease 0.8s;
-        }
-
-        .envelope-container.open .env-card {
-            transform: translateX(-50%) translateY(-120%) scale(1.05);
-            z-index: 5;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-
-        .envelope-container.open .env-card h3 {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .click-hint {
-            position: absolute;
-            bottom: 8%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: 'Playfair Display', serif;
-            font-size: 0.85rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--sepia-light);
-            animation: pulseHint 2.5s infinite;
-            white-space: nowrap;
-        }
-
-        @keyframes pulseHint {
-            0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
-            50% { opacity: 1; transform: translateX(-50%) translateY(-8px); }
-        }
-
-        .envelope-container.open + .click-hint {
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        /* ================= MAIN CONTENT STYLES ================= */
-        .main-content {
-            opacity: 0;
-            transform: translateY(60px) scale(0.95);
-            transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .main-content.visible {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        section {
-            margin-bottom: 80px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        section.fade-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            color: var(--sepia);
-        }
-
-        .script-font {
-            font-family: 'Great Vibes', cursive;
-            color: var(--gold);
-            font-weight: normal;
-        }
-
-        /* Vintage Frame */
-        .vintage-frame {
-            position: relative;
-            padding: 40px;
-            border: 2px solid var(--gold);
-            background: rgba(253, 251, 247, 0.8);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .vintage-frame:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
-        }
-
-        .vintage-frame::before,
-        .vintage-frame::after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--gold);
-            transition: all 0.4s ease;
-        }
-
-        .vintage-frame::before {
-            top: -6px;
-            left: -6px;
-            border-right: none;
-            border-bottom: none;
-        }
-
-        .vintage-frame::after {
-            bottom: -6px;
-            right: -6px;
-            border-left: none;
-            border-top: none;
-        }
-
-        .vintage-frame:hover::before,
-        .vintage-frame:hover::after {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 60px 20px;
-            position: relative;
-        }
-
-        .hero-ornament {
-            font-size: 28px;
-            color: var(--gold);
-            opacity: 0.6;
-            display: block;
-            margin: 10px 0;
-            animation: ornamentSpin 1s ease-out forwards;
-            transform: scale(0);
-        }
-
-        @keyframes ornamentSpin {
-            to { transform: scale(1) rotate(0deg); opacity: 0.8; }
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 10px;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            overflow: hidden;
-        }
-
-        .hero h1 span {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(100%);
-            animation: textReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-
-        .hero h1 span:nth-child(1) { animation-delay: 0.2s; }
-        .hero h1 span:nth-child(2) { animation-delay: 0.4s; }
-        .hero h1 span:nth-child(3) { animation-delay: 0.6s; }
-
-        @keyframes textReveal {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero .ampersand {
-            font-family: 'Great Vibes', cursive;
-            font-size: 5rem;
-            color: var(--gold);
-            display: block;
-            margin: 15px 0;
-            line-height: 1;
-            opacity: 0;
-            transform: scale(0);
-            animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
-        }
-
-        @keyframes popIn {
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .hero .date {
-            font-size: 1.2rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-top: 30px;
-            color: var(--sepia-light);
-            font-weight: 600;
-            opacity: 0;
-            animation: fadeIn 1s ease 1.2s forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* History Section */
-        .history p {
-            font-size: 1.3rem;
-            max-width: 600px;
-            margin: 0 auto;
-            font-style: italic;
-            line-height: 1.8;
-        }
-
-        /* Timetable Section */
-        .timeline {
-            position: relative;
-            max-width: 500px;
-            margin: 40px auto 0;
-            padding-left: 30px;
-            text-align: left;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 10px;
-            bottom: 10px;
-            width: 2px;
-            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: transform 1.5s ease;
-        }
-
-        section.fade-in .timeline::before {
-            transform: scaleY(1);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 35px;
-            padding-left: 25px;
-            opacity: 0;
-            transform: translateX(-20px);
-            transition: all 0.6s ease;
-        }
-
-        section.fade-in .timeline-item {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        section.fade-in .timeline-item:nth-child(1) { transition-delay: 0.2s; }
-        section.fade-in .timeline-item:nth-child(2) { transition-delay: 0.4s; }
-        section.fade-in .timeline-item:nth-child(3) { transition-delay: 0.6s; }
-        section.fade-in .timeline-item:nth-child(4) { transition-delay: 0.8s; }
-
-        .timeline-item::before {
-            content: '♦';
-            position: absolute;
-            left: -36px;
-            top: 2px;
-            color: var(--gold);
-            font-size: 14px;
-            background: var(--cream);
-            padding: 0 4px;
-            transform: scale(0);
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        section.fade-in .timeline-item::before {
-            transform: scale(1);
-        }
-
-        .timeline-item .time {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--gold);
-            letter-spacing: 1px;
-        }
-
-        .timeline-item .event {
-            font-size: 1.4rem;
-            margin-top: 5px;
-            font-weight: 600;
-        }
-
-        .timeline-item .description {
-            font-size: 1.05rem;
-            color: var(--sepia-light);
-            margin-top: 5px;
-            font-style: italic;
-        }
-
-        /* Location Section */
-        .venue-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--sepia);
-        }
-
-        .venue-address {
-            font-size: 1.2rem;
-            color: var(--sepia-light);
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-
-        .map-btn {
-            display: inline-block;
-            padding: 14px 35px;
-            background: transparent;
-            border: 1px solid var(--gold);
-            color: var(--sepia);
-            text-decoration: none;
-            font-family: 'Playfair Display', serif;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .map-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gold);
-            transition: left 0.4s ease;
-            z-index: -1;
-        }
-
-        .map-btn:hover {
-            color: white;
-            border-color: var(--gold);
-        }
-
-        .map-btn:hover::before {
-            left: 0;
-        }
-
-        /* RSVP Section */
-        .rsvp {
-            background: var(--parchment);
-            padding: 50px 40px;
-            position: relative;
-        }
-
-        .rsvp-subtitle {
-            font-style: italic;
-            margin-bottom: 35px;
-            color: var(--sepia-light);
-            font-size: 1.1rem;
-        }
-
-        .form-group {
-            margin-bottom: 30px;
-            text-align: left;
-            max-width: 450px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .form-group label {
-            display: block;
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            color: var(--sepia);
-        }
-
-        .radio-group {
-            display: flex;
-            gap: 30px;
-            margin-top: 10px;
-        }
-
-        .radio-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 1.15rem;
-            color: var(--sepia);
-            transition: color 0.3s, transform 0.2s;
-        }
-
-        .radio-label:hover {
-            color: var(--gold);
-            transform: translateX(5px);
-        }
-
-        input[type="radio"], input[type="number"], input[type="text"], textarea {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.15rem;
-            padding: 12px;
-            border: 1px solid #d4c5b0;
-            background: var(--cream);
-            color: var(--sepia);
-            width: 100%;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--gold);
-            cursor: pointer;
-        }
-
-        input[type="number"] {
-            width: 100px;
-        }
-
-        input:focus, textarea:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .submit-btn {
-            background: var(--sepia);
-            color: var(--cream);
-            border: none;
-            padding: 16px 50px;
-            font-family: 'Playfair Display', serif;
-            font-size: 1rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            margin-top: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .submit-btn:hover {
-            background: var(--gold);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
-        }
-
-        .submit-btn:hover::after {
-            width: 300px;
-            height: 300px;
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .success-message {
-            display: none;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid var(--gold);
-            padding: 30px;
-            margin-top: 20px;
-            font-size: 1.3rem;
-            color: var(--sepia);
-            font-style: italic;
-            animation: fadeInUp 0.6s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Sparkle Animation for Success */
-        .sparkle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: var(--gold);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: sparkleAnim 1s ease-out forwards;
-        }
-
-        @keyframes sparkleAnim {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .envelope-container {
-                width: 90vw;
-            }
-            .wax-seal {
-                width: 60px;
-                height: 60px;
-            }
-            .wax-seal span {
-                font-size: 24px;
-            }
-            .env-card h3 {
-                font-size: 1.8rem;
-            }
-            .hero h1 { font-size: 2.8rem; }
-            .hero .ampersand { font-size: 3.5rem; }
-            .vintage-frame { padding: 30px 20px; }
-            .radio-group { flex-direction: column; gap: 15px; }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trattoria Aurelia — Authentic Italian Fine Dining</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.12/index.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.18/index.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-armenian@5.0.12/index.min.css" />
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --bg-2:#141210;
+    --cream:#f5f0e8;
+    --cream-2:#e8dfcf;
+    --gold:#c9a961;
+    --gold-2:#e0c282;
+    --muted:#8a8277;
+  }
+  *{ -webkit-font-smoothing:antialiased; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'Noto Sans Armenian', 'Inter', sans-serif;
+    background:var(--bg);
+    color:var(--cream);
+    overflow-x:hidden;
+  }
+  .font-serif{ font-family:'Playfair Display', 'Noto Sans Armenian', serif; }
+  .text-gold{ color:var(--gold); }
+  .bg-gold{ background:var(--gold); }
+  .border-gold{ border-color:var(--gold); }
+
+  ::-webkit-scrollbar{ width:8px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--gold); border-radius:4px; }
+
+  #loader{
+    position:fixed; inset:0; background:var(--bg); z-index:9999;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .loader-text{
+    font-family:'Playfair Display', 'Noto Sans Armenian', serif;
+    font-size:clamp(2rem, 6vw, 5rem);
+    color:var(--gold);
+    overflow:hidden;
+  }
+  .loader-text span{ display:inline-block; transform:translateY(100%); }
+
+  .hero-bg{
+    position:absolute; inset:0;
+    background-image:url('https://image.qwenlm.ai/public_source/32778b29-a5d3-4d94-83f8-b8420c9df271/187b15c74-8c52-4f31-aa62-f77ef518ac2b.png');
+    background-size:cover; background-position:center;
+    filter:brightness(0.55) contrast(1.1);
+    transform:scale(1.15);
+  }
+  .hero-overlay{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.6) 60%, var(--bg) 100%);
+  }
+
+  .nav-glass{
+    background:rgba(10,10,10,0.85);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(201,169,97,0.15);
+  }
+
+  .btn-primary{
+    position:relative;
+    padding:1rem 2.5rem;
+    background:var(--gold);
+    color:var(--bg);
+    font-weight:600;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    font-size:0.75rem;
+    overflow:hidden;
+    transition:all 0.5s cubic-bezier(0.77,0,0.175,1);
+  }
+  .btn-primary::before{
+    content:''; position:absolute; inset:0;
+    background:var(--cream);
+    transform:translateY(100%);
+    transition:transform 0.5s cubic-bezier(0.77,0,0.175,1);
+  }
+  .btn-primary:hover::before{ transform:translateY(0); }
+  .btn-primary span{ position:relative; z-index:1; }
+
+  .btn-outline{
+    padding:1rem 2.5rem;
+    border:1px solid var(--gold);
+    color:var(--gold);
+    font-weight:600;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    font-size:0.75rem;
+    transition:all 0.4s ease;
+    position:relative;
+    overflow:hidden;
+  }
+  .btn-outline::before{
+    content:''; position:absolute; inset:0;
+    background:var(--gold);
+    transform:scaleX(0); transform-origin:right;
+    transition:transform 0.4s ease;
+    z-index:0;
+  }
+  .btn-outline:hover::before{ transform:scaleX(1); transform-origin:left; }
+  .btn-outline:hover{ color:var(--bg); }
+  .btn-outline span{ position:relative; z-index:1; }
+
+  .reveal-line{ overflow:hidden; }
+  .reveal-line span{ display:inline-block; transform:translateY(110%); }
+
+  .divider{
+    width:60px; height:1px; background:var(--gold);
+    display:inline-block; margin:0 auto;
+  }
+
+  .tab-btn{
+    padding:0.75rem 1.5rem;
+    color:var(--muted);
+    font-size:0.8rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    transition:all 0.3s ease;
+    position:relative;
+    cursor:pointer;
+  }
+  .tab-btn.active{ color:var(--gold); }
+  .tab-btn.active::after{
+    content:''; position:absolute; bottom:-4px; left:50%; transform:translateX(-50%);
+    width:24px; height:1px; background:var(--gold);
+  }
+  .tab-btn:hover{ color:var(--gold); }
+
+  .menu-item{
+    padding:1.75rem 0;
+    border-bottom:1px solid rgba(201,169,97,0.15);
+    transition:all 0.4s ease;
+    cursor:pointer;
+  }
+  .menu-item:hover{ padding-left:1rem; background:rgba(201,169,97,0.04); }
+  .menu-item .price{
+    font-family:'Playfair Display', 'Noto Sans Armenian', serif;
+    color:var(--gold);
+    font-size:1.25rem;
+  }
+  .menu-item .dish-name{
+    font-family:'Playfair Display', 'Noto Sans Armenian', serif;
+    font-size:1.5rem;
+    transition:color 0.3s ease;
+  }
+  .menu-item:hover .dish-name{ color:var(--gold); }
+
+  .input-field{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid rgba(201,169,97,0.3);
+    padding:1rem 0 0.75rem;
+    color:var(--cream);
+    font-family:'Noto Sans Armenian', 'Inter', sans-serif;
+    font-size:0.95rem;
+    transition:border-color 0.3s ease;
+  }
+  .input-field:focus{ outline:none; border-color:var(--gold); }
+  .input-field::placeholder{ color:var(--muted); }
+
+  .marquee-track{
+    display:flex;
+    animation:marquee 30s linear infinite;
+    width:max-content;
+  }
+  @keyframes marquee{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
+  }
+
+  .parallax-img{ will-change:transform; }
+
+  .deco-line{
+    position:absolute;
+    width:1px; height:80px;
+    background:linear-gradient(180deg, transparent, var(--gold), transparent);
+  }
+
+  .feature-card{
+    transition:transform 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .feature-card:hover{ transform:translateY(-8px); }
+  .feature-card .icon-wrap{
+    transition:all 0.5s ease;
+  }
+  .feature-card:hover .icon-wrap{
+    background:var(--gold);
+    color:var(--bg);
+    transform:rotate(45deg);
+  }
+
+  .scroll-indicator{
+    width:24px; height:40px;
+    border:1px solid var(--gold);
+    border-radius:12px;
+    position:relative;
+  }
+  .scroll-indicator::before{
+    content:''; position:absolute;
+    top:6px; left:50%; transform:translateX(-50%);
+    width:3px; height:8px; background:var(--gold);
+    border-radius:2px;
+    animation:scrollDot 2s ease-in-out infinite;
+  }
+  @keyframes scrollDot{
+    0%,100%{ top:6px; opacity:1; }
+    50%{ top:22px; opacity:0.3; }
+  }
+
+  .quote-mark{
+    font-family:'Playfair Display', 'Noto Sans Armenian', serif;
+    font-size:8rem;
+    line-height:1;
+    color:var(--gold);
+    opacity:0.3;
+  }
+
+  .mobile-menu{
+    position:fixed; inset:0;
+    background:var(--bg);
+    z-index:99;
+    display:flex; align-items:center; justify-content:center;
+    transform:translateY(-100%);
+    transition:transform 0.6s cubic-bezier(0.77,0,0.175,1);
+  }
+  .mobile-menu.open{ transform:translateY(0); }
+
+  .grain::after{
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:1000;
+    opacity:0.04;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .fade-up{ opacity:0; transform:translateY(40px); }
+  
+  .lang-btn{
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .lang-btn.active{
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .lang-btn.active::after{
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--gold);
+  }
+  
+  .i18n-fade {
+    transition: opacity 0.3s ease;
+  }
+</style>
 </head>
-<body>
+<body class="grain">
 
-    <!-- Floating Particles Background -->
-    <div class="particles" id="particles"></div>
+<div id="loader">
+  <div class="loader-text">
+    <span>Aurelia</span>
+  </div>
+</div>
 
-    <!-- Full Page Envelope -->
-    <div class="envelope-wrapper" id="envelopeWrapper">
-        <div class="envelope-container" id="envelope" onclick="openEnvelope()">
-            <div class="env-back"></div>
-            <div class="env-left"></div>
-            <div class="env-right"></div>
-            <div class="env-bottom"></div>
-            <div class="env-top"></div>
-            
-            <div class="wax-seal">
-                <span>A & J</span>
-            </div>
-            
-            <div class="env-card">
-                <h3>You are cordially invited</h3>
-            </div>
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex items-center justify-between">
+    <a href="#home" class="font-serif text-2xl text-gold tracking-wider">Aurelia<span class="text-cream">.</span></a>
+    <ul class="hidden lg:flex items-center gap-8 text-xs tracking-[0.2em] uppercase">
+      <li><a href="#home" class="hover:text-gold transition-colors i18n-fade" data-i18n="nav_home">Home</a></li>
+      <li><a href="#about" class="hover:text-gold transition-colors i18n-fade" data-i18n="nav_story">Story</a></li>
+      <li><a href="#menu" class="hover:text-gold transition-colors i18n-fade" data-i18n="nav_menu">Menu</a></li>
+      <li><a href="#experience" class="hover:text-gold transition-colors i18n-fade" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#reserve" class="hover:text-gold transition-colors i18n-fade" data-i18n="nav_reservations">Reservations</a></li>
+    </ul>
+    <div class="hidden lg:flex items-center gap-8">
+      <div class="flex items-center gap-3 text-xs tracking-[0.15em] uppercase">
+        <button class="lang-btn active i18n-fade" data-lang="en">EN</button>
+        <span class="text-gold/30">|</span>
+        <button class="lang-btn text-cream-2/60 hover:text-gold i18n-fade" data-lang="ru">RU</button>
+        <span class="text-gold/30">|</span>
+        <button class="lang-btn text-cream-2/60 hover:text-gold i18n-fade" data-lang="hy">HY</button>
+      </div>
+      <a href="#reserve" class="btn-outline i18n-fade"><span data-i18n="nav_book">Book a Table</span></a>
+    </div>
+    <button id="menuToggle" class="lg:hidden text-gold text-2xl">☰</button>
+  </div>
+</nav>
+
+<div id="mobileMenu" class="mobile-menu lg:hidden">
+  <button id="menuClose" class="absolute top-6 right-6 text-gold text-3xl">×</button>
+  <div class="flex flex-col items-center gap-6 mb-8">
+    <div class="flex items-center gap-4 text-sm tracking-[0.2em] uppercase">
+      <button class="lang-btn active i18n-fade" data-lang="en">EN</button>
+      <span class="text-gold/30">|</span>
+      <button class="lang-btn text-cream-2/60 hover:text-gold i18n-fade" data-lang="ru">RU</button>
+      <span class="text-gold/30">|</span>
+      <button class="lang-btn text-cream-2/60 hover:text-gold i18n-fade" data-lang="hy">HY</button>
+    </div>
+  </div>
+  <ul class="flex flex-col items-center gap-8 text-2xl font-serif">
+    <li><a href="#home" class="mob-link i18n-fade" data-i18n="nav_home">Home</a></li>
+    <li><a href="#about" class="mob-link i18n-fade" data-i18n="nav_story">Story</a></li>
+    <li><a href="#menu" class="mob-link i18n-fade" data-i18n="nav_menu">Menu</a></li>
+    <li><a href="#experience" class="mob-link i18n-fade" data-i18n="nav_experience">Experience</a></li>
+    <li><a href="#reserve" class="mob-link i18n-fade" data-i18n="nav_reservations">Reservations</a></li>
+  </ul>
+</div>
+
+<section id="home" class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="relative z-10 text-center px-6 max-w-5xl">
+    <div class="reveal-line mb-6">
+      <span class="text-gold text-xs tracking-[0.4em] uppercase i18n-fade" data-i18n="hero_est">Est. 1987 · Milano</span>
+    </div>
+    <h1 class="font-serif text-6xl md:text-8xl lg:text-9xl leading-[0.95] mb-8">
+      <div class="reveal-line"><span class="i18n-fade" data-i18n="hero_title1">Where Every</span></div>
+      <div class="reveal-line"><span class="i18n-fade" data-i18n="hero_title2"><span class="italic text-gold">Bite</span> Tells a Story</span></div>
+    </h1>
+    <p class="text-cream-2/80 max-w-xl mx-auto mb-10 text-lg fade-up i18n-fade" data-i18n="hero_desc">
+      A celebration of Italian heritage, crafted with passion and served with elegance in the heart of the city.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center fade-up">
+      <a href="#menu" class="btn-primary i18n-fade"><span data-i18n="hero_explore">Explore Menu</span></a>
+      <a href="#reserve" class="btn-outline i18n-fade"><span data-i18n="hero_reserve">Reserve a Table</span></a>
+    </div>
+  </div>
+  <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 fade-up">
+    <span class="text-[10px] tracking-[0.3em] uppercase text-gold i18n-fade" data-i18n="hero_scroll">Scroll</span>
+    <div class="scroll-indicator"></div>
+  </div>
+</section>
+
+<div class="py-6 border-y border-gold/15 overflow-hidden bg-[#0e0c0a]">
+  <div class="marquee-track font-serif italic text-3xl md:text-5xl text-gold/70">
+    <div class="flex items-center gap-12 px-6">
+      <span class="i18n-fade" data-i18n="marquee_1">Authentic Italian</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_2">Handmade Pasta</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_3">Fine Wine Selection</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_4">Wood-Fired Oven</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_5">Truffle Specialties</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_6">Seasonal Ingredients</span><span class="text-gold">✦</span>
+    </div>
+    <div class="flex items-center gap-12 px-6">
+      <span class="i18n-fade" data-i18n="marquee_1">Authentic Italian</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_2">Handmade Pasta</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_3">Fine Wine Selection</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_4">Wood-Fired Oven</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_5">Truffle Specialties</span><span class="text-gold">✦</span>
+      <span class="i18n-fade" data-i18n="marquee_6">Seasonal Ingredients</span><span class="text-gold">✦</span>
+    </div>
+  </div>
+</div>
+
+<section id="about" class="py-28 lg:py-40 px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+      <div class="relative order-2 lg:order-1">
+        <div class="deco-line top-0 left-0"></div>
+        <div class="overflow-hidden rounded-sm">
+          <img src="https://image.qwenlm.ai/public_source/32778b29-a5d3-4d94-83f8-b8420c9df271/10d7b5ba0-3da1-44f4-aa67-5b51e57219f3.png" alt="Chef" class="parallax-img w-full h-[500px] lg:h-[650px] object-cover" />
         </div>
-        <div class="click-hint">Tap to Open</div>
+        <div class="absolute -bottom-6 -right-6 lg:-right-10 bg-gold text-bg p-6 lg:p-8 max-w-[200px]">
+          <div class="font-serif text-5xl lg:text-6xl">38</div>
+          <div class="text-[10px] tracking-[0.25em] uppercase mt-2 i18n-fade" data-i18n="about_years">Years of Culinary Excellence</div>
+        </div>
+      </div>
+      <div class="order-1 lg:order-2">
+        <div class="text-gold text-xs tracking-[0.4em] uppercase mb-6 fade-up i18n-fade" data-i18n="about_title">Our Story</div>
+        <h2 class="font-serif text-5xl lg:text-7xl leading-[1.05] mb-8 fade-up i18n-fade" data-i18n="about_heading">
+          A Legacy of <span class="italic text-gold">Flavor</span> & Tradition
+        </h2>
+        <div class="divider mb-8 fade-up"></div>
+        <p class="text-cream-2/70 text-lg leading-relaxed mb-6 fade-up i18n-fade" data-i18n="about_text1">
+          Founded in 1987 by the Rossi family, Trattoria Aurelia brings the soul of Italian countryside dining to the modern table. Every dish is a tribute to generations of nonnas, farmers, and artisans who believed that food is love made visible.
+        </p>
+        <p class="text-cream-2/70 text-lg leading-relaxed mb-10 fade-up i18n-fade" data-i18n="about_text2">
+          We source our ingredients daily from trusted producers across Italy — from San Marzano tomatoes to Piedmont truffles — ensuring every plate tells a story of authenticity and passion.
+        </p>
+        <div class="grid grid-cols-3 gap-6 fade-up">
+          <div>
+            <div class="font-serif text-3xl text-gold">24</div>
+            <div class="text-xs tracking-[0.2em] uppercase text-cream-2/60 mt-1 i18n-fade" data-i18n="about_stat1">Signature Dishes</div>
+          </div>
+          <div>
+            <div class="font-serif text-3xl text-gold">150+</div>
+            <div class="text-xs tracking-[0.2em] uppercase text-cream-2/60 mt-1 i18n-fade" data-i18n="about_stat2">Fine Wines</div>
+          </div>
+          <div>
+            <div class="font-serif text-3xl text-gold">4.9</div>
+            <div class="text-xs tracking-[0.2em] uppercase text-cream-2/60 mt-1 i18n-fade" data-i18n="about_stat3">Guest Rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="py-28 bg-[#0e0c0a] px-6 lg:px-12">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-20">
+      <div class="text-gold text-xs tracking-[0.4em] uppercase mb-6 fade-up i18n-fade" data-i18n="exp_title">The Experience</div>
+      <h2 class="font-serif text-5xl lg:text-6xl fade-up i18n-fade" data-i18n="exp_heading">Crafted with <span class="italic text-gold">Intention</span></h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="feature-card bg-bg-2/50 border border-gold/10 p-10 fade-up">
+        <div class="icon-wrap w-14 h-14 border border-gold/40 flex items-center justify-center text-gold mb-8">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L15 9L22 10L17 15L18 22L12 19L6 22L7 15L2 10L9 9L12 2Z"/></svg>
+        </div>
+        <h3 class="font-serif text-2xl mb-4 i18n-fade" data-i18n="exp_c1_title">Michelin Craft</h3>
+        <p class="text-cream-2/60 leading-relaxed i18n-fade" data-i18n="exp_c1_desc">Our kitchen is led by Chef Marco Rossi, whose techniques blend classical Italian mastery with contemporary artistry.</p>
+      </div>
+      <div class="feature-card bg-bg-2/50 border border-gold/10 p-10 fade-up">
+        <div class="icon-wrap w-14 h-14 border border-gold/40 flex items-center justify-center text-gold mb-8">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C14 6 18 8 22 8C18 10 14 12 12 16C10 12 6 10 2 8C6 8 10 6 12 2Z"/><path d="M12 16V22"/></svg>
+        </div>
+        <h3 class="font-serif text-2xl mb-4 i18n-fade" data-i18n="exp_c2_title">Farm to Table</h3>
+        <p class="text-cream-2/60 leading-relaxed i18n-fade" data-i18n="exp_c2_desc">Direct partnerships with Italian farms ensure the freshest seasonal produce arrives at our door every morning.</p>
+      </div>
+      <div class="feature-card bg-bg-2/50 border border-gold/10 p-10 fade-up">
+        <div class="icon-wrap w-14 h-14 border border-gold/40 flex items-center justify-center text-gold mb-8">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2H16V6C16 8 14 10 12 10C10 10 8 8 8 6V2Z"/><path d="M12 10V22"/><path d="M6 22H18"/></svg>
+        </div>
+        <h3 class="font-serif text-2xl mb-4 i18n-fade" data-i18n="exp_c3_title">Curated Wines</h3>
+        <p class="text-cream-2/60 leading-relaxed i18n-fade" data-i18n="exp_c3_desc">Our sommelier has hand-selected over 150 labels from Italy's finest vineyards, from Barolo to Brunello.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="menu" class="py-28 lg:py-40 px-6 lg:px-12 relative overflow-hidden">
+  <div class="absolute top-0 right-0 w-1/2 h-full opacity-20 pointer-events-none">
+    <img src="https://image.qwenlm.ai/public_source/32778b29-a5d3-4d94-83f8-b8420c9df271/148e26d47-d2b4-4864-9627-2fffd1be5693.png" alt="" class="w-full h-full object-cover parallax-img" />
+  </div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16">
+      <div class="text-gold text-xs tracking-[0.4em] uppercase mb-6 fade-up i18n-fade" data-i18n="menu_title">Il Menu</div>
+      <h2 class="font-serif text-5xl lg:text-7xl mb-6 fade-up i18n-fade" data-i18n="menu_heading">A Taste of <span class="italic text-gold">Italia</span></h2>
+      <div class="divider mb-10 fade-up"></div>
+      <p class="text-cream-2/70 max-w-2xl mx-auto fade-up i18n-fade" data-i18n="menu_desc">Our menu evolves with the seasons, honoring tradition while embracing the finest ingredients of the moment.</p>
     </div>
 
-    <!-- Main Invitation Content -->
-    <main class="main-content" id="mainContent">
-        
-        <!-- Hero / Date -->
-        <section class="hero fade-in-target">
-            <p class="script-font" style="font-size: 2.2rem; margin-bottom: 15px;">Together with their families</p>
-            <h1>
-                <span>Alexandra</span><br>
-                <span class="ampersand">&</span><br>
-                <span>Jonathan</span>
-            </h1>
-            <span class="hero-ornament">❦</span>
-            <p class="date">Saturday, the Tenth of October<br>Two Thousand and Twenty-Six<br>at Four O'Clock in the Afternoon</p>
-            <span class="hero-ornament" style="animation-delay: 1.4s; transform: rotate(180deg) scale(0);">❦</span>
-        </section>
+    <div class="flex flex-wrap justify-center gap-2 mb-16 fade-up">
+      <button class="tab-btn active i18n-fade" data-tab="antipasti" data-i18n="tab_antipasti">Antipasti</button>
+      <button class="tab-btn i18n-fade" data-tab="primi" data-i18n="tab_primi">Primi Piatti</button>
+      <button class="tab-btn i18n-fade" data-tab="secondi" data-i18n="tab_secondi">Secondi</button>
+      <button class="tab-btn i18n-fade" data-tab="dolci" data-i18n="tab_dolci">Dolci</button>
+      <button class="tab-btn i18n-fade" data-tab="vini" data-i18n="tab_vini">Vini</button>
+    </div>
 
-        <!-- Our History -->
-        <section class="history fade-in-target">
-            <div class="vintage-frame">
-                <h2 class="script-font" style="font-size: 3rem; margin-bottom: 25px;">Our Story</h2>
-                <p>
-                    "It all began with a chance encounter at a quiet corner bookstore, reaching for the same vintage novel. 
-                    What started as a shared laugh over coffee turned into countless adventures, late-night conversations, 
-                    and a love that grew deeper with each passing season. Today, we are thrilled to invite you to witness 
-                    the beginning of our forever."
-                </p>
+    <div id="menuContent" class="bg-[#0e0c0a]/80 backdrop-blur border border-gold/10 p-8 lg:p-14">
+      <div class="menu-panel" data-panel="antipasti">
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_1_name">Burrata di Puglia</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_1_desc">Heirloom tomatoes, basil oil, aged balsamic, sourdough crisps</div>
             </div>
-        </section>
-
-        <!-- Timetable -->
-        <section class="timetable fade-in-target">
-            <h2 class="script-font" style="font-size: 3rem; margin-bottom: 10px;">Order of the Day</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="time">4:00 PM</div>
-                    <div class="event">The Ceremony</div>
-                    <div class="description">Exchange of vows in the garden courtyard</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="time">5:00 PM</div>
-                    <div class="event">Cocktail Hour</div>
-                    <div class="description">Artisan cocktails and light hors d'oeuvres</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="time">6:30 PM</div>
-                    <div class="event">Dinner & Reception</div>
-                    <div class="description">A seated three-course meal and toasts</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="time">9:00 PM</div>
-                    <div class="event">Dancing & Celebrations</div>
-                    <div class="description">Live music and dancing under the stars</div>
-                </div>
+            <div class="price">€18</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_2_name">Carpaccio di Manzo</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_2_desc">Thinly sliced beef tenderloin, truffle aioli, Parmigiano Reggiano, arugula</div>
             </div>
-        </section>
-
-        <!-- Location -->
-        <section class="location fade-in-target">
-            <h2 class="script-font" style="font-size: 3rem; margin-bottom: 25px;">The Venue</h2>
-            <div class="vintage-frame" style="display: inline-block; min-width: 300px;">
-                <div class="venue-name">The Grand Heritage Estate</div>
-                <div class="venue-address">
-                    123 Vintage Lane, Countryside Valley<br>
-                    California, 90210
-                </div>
-                <a href="https://maps.google.com" target="_blank" class="map-btn">View on Map</a>
+            <div class="price">€24</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_3_name">Carpaccio di Polpo</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_3_desc">Grilled octopus, celery, capers, lemon vinaigrette</div>
             </div>
-        </section>
-
-        <!-- RSVP / Q&A -->
-        <section class="rsvp fade-in-target">
-            <div class="vintage-frame">
-                <h2 class="script-font" style="font-size: 3rem; margin-bottom: 10px;">Kindly Reply</h2>
-                <p class="rsvp-subtitle">Please respond by the First of September, 2026</p>
-                
-                <form id="rsvpForm" onsubmit="handleRSVP(event)">
-                    <div class="form-group">
-                        <label>Will you be joining us?</label>
-                        <div class="radio-group">
-                            <label class="radio-label">
-                                <input type="radio" name="attending" value="yes" required onchange="toggleGuestCount(true)">
-                                Joyfully Accepts
-                            </label>
-                            <label class="radio-label">
-                                <input type="radio" name="attending" value="no" required onchange="toggleGuestCount(false)">
-                                Regretfully Declines
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group" id="guestCountGroup" style="display: none;">
-                        <label for="guests">Number of Guests</label>
-                        <input type="number" id="guests" name="guests" min="1" max="10" value="1">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="name">Full Name(s)</label>
-                        <input type="text" id="name" name="name" required placeholder="e.g., John & Jane Doe">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message">Dietary Restrictions or a Message</label>
-                        <textarea id="message" name="message" placeholder="e.g., Vegetarian, or a short note..."></textarea>
-                    </div>
-
-                    <button type="submit" class="submit-btn" id="submitBtn">Send Reply</button>
-                </form>
-
-                <div class="success-message" id="successMessage">
-                    Thank you! Your reply has been received.<br>We can't wait to celebrate with you! 💌
-                </div>
+            <div class="price">€22</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_4_name">Vitello Tonnato</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_4_desc">Chilled veal, tuna-caper sauce, crispy capers</div>
             </div>
-        </section>
+            <div class="price">€21</div>
+          </div>
+        </div>
+      </div>
 
-        <footer style="text-align: center; padding: 40px 20px 80px; color: var(--sepia-light); font-size: 1rem;">
-            <p class="script-font" style="font-size: 2rem; margin-bottom: 10px;">With Love</p>
-            <p>Alexandra & Jonathan</p>
-        </footer>
+      <div class="menu-panel hidden" data-panel="primi">
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_5_name">Tagliatelle al Tartufo</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_5_desc">Fresh egg pasta, black truffle, butter, Parmigiano 36 months</div>
+            </div>
+            <div class="price">€38</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_6_name">Risotto ai Funghi Porcini</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_6_desc">Carnaroli rice, porcini mushrooms, white wine, aged butter</div>
+            </div>
+            <div class="price">€32</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_7_name">Lobster Ravioli</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_7_desc">Handmade pasta, Maine lobster, saffron cream, chive oil</div>
+            </div>
+            <div class="price">€42</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_8_name">Cacio e Pepe</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_8_desc">Tonnarelli pasta, Pecorino Romano, Tellicherry black pepper</div>
+            </div>
+            <div class="price">€26</div>
+          </div>
+        </div>
+      </div>
 
-    </main>
+      <div class="menu-panel hidden" data-panel="secondi">
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_9_name">Bistecca alla Fiorentina</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_9_desc">Dry-aged T-bone, rosemary, garlic, for two</div>
+            </div>
+            <div class="price">€95</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_10_name">Branzino al Forno</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_10_desc">Whole roasted sea bass, Ligurian olives, cherry tomatoes, capers</div>
+            </div>
+            <div class="price">€48</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_11_name">Ossobuco Milanese</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_11_desc">Braised veal shank, saffron risotto, gremolata</div>
+            </div>
+            <div class="price">€52</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_12_name">Anatra Arrosto</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_12_desc">Roasted duck breast, orange reduction, polenta</div>
+            </div>
+            <div class="price">€46</div>
+          </div>
+        </div>
+      </div>
 
-    <script>
-        // Generate floating particles
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const size = Math.random() * 6 + 2;
-                const left = Math.random() * 100;
-                const delay = Math.random() * 10;
-                const duration = Math.random() * 8 + 8;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${left}%`;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.animationDuration = `${duration}s`;
-                
-                container.appendChild(particle);
-            }
+      <div class="menu-panel hidden" data-panel="dolci">
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_13_name">Tiramisù Classico</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_13_desc">Mascarpone, espresso, Savoiardi biscuits, cocoa</div>
+            </div>
+            <div class="price">€14</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_14_name">Panna Cotta</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_14_desc">Vanilla bean, wild berry compote, mint</div>
+            </div>
+            <div class="price">€12</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_15_name">Cannoli Siciliani</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_15_desc">Ricotta, candied orange, pistachios, chocolate chips</div>
+            </div>
+            <div class="price">€13</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_16_name">Torta Caprese</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_16_desc">Flourless chocolate-almond cake, Amalfi lemon gelato</div>
+            </div>
+            <div class="price">€15</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-panel hidden" data-panel="vini">
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_17_name">Barolo DOCG 2018</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_17_desc">Piedmont · Nebbiolo · Full-bodied, elegant tannins</div>
+            </div>
+            <div class="price">€120</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_18_name">Brunello di Montalcino</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_18_desc">Tuscany · Sangiovese · Rich, complex, aged 5 years</div>
+            </div>
+            <div class="price">€145</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_19_name">Prosecco Superiore</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_19_desc">Veneto · Glera · Crisp, floral, fine bubbles</div>
+            </div>
+            <div class="price">€45</div>
+          </div>
+        </div>
+        <div class="menu-item">
+          <div class="flex justify-between items-baseline gap-4">
+            <div>
+              <div class="dish-name i18n-fade" data-i18n="dish_20_name">Limoncello di Sorrento</div>
+              <div class="text-cream-2/60 text-sm mt-2 i18n-fade" data-i18n="dish_20_desc">Amalfi Coast · House-made · Chilled digestif</div>
+            </div>
+            <div class="price">€12</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-28 bg-[#0e0c0a] px-6 lg:px-12">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="text-gold text-xs tracking-[0.4em] uppercase mb-6 fade-up i18n-fade" data-i18n="review_title">Guest Voices</div>
+      <h2 class="font-serif text-5xl lg:text-6xl fade-up i18n-fade" data-i18n="review_heading">Words from <span class="italic text-gold">Our Table</span></h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="border border-gold/15 p-10 fade-up">
+        <div class="quote-mark">"</div>
+        <p class="text-cream-2/80 leading-relaxed mb-6 -mt-6 i18n-fade" data-i18n="review_1_text">An extraordinary evening. The truffle tagliatelle was transcendent, and the service made us feel like family. A true gem.</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center font-serif text-gold">E</div>
+          <div>
+            <div class="font-serif">Elena Marchetti</div>
+            <div class="text-xs text-gold tracking-[0.2em] uppercase i18n-fade" data-i18n="review_1_role">Food Critic</div>
+          </div>
+        </div>
+      </div>
+      <div class="border border-gold/15 p-10 fade-up">
+        <div class="quote-mark">"</div>
+        <p class="text-cream-2/80 leading-relaxed mb-6 -mt-6 i18n-fade" data-i18n="review_2_text">From the moment we walked in, every detail spoke of care and tradition. The bistecca was the best I've had outside of Florence.</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center font-serif text-gold">J</div>
+          <div>
+            <div class="font-serif">James Whitfield</div>
+            <div class="text-xs text-gold tracking-[0.2em] uppercase i18n-fade" data-i18n="review_2_role">Regular Guest</div>
+          </div>
+        </div>
+      </div>
+      <div class="border border-gold/15 p-10 fade-up">
+        <div class="quote-mark">"</div>
+        <p class="text-cream-2/80 leading-relaxed mb-6 -mt-6 i18n-fade" data-i18n="review_3_text">A Michelin-worthy experience without the pretension. The wine pairing was impeccable. We'll be back every anniversary.</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center font-serif text-gold">S</div>
+          <div>
+            <div class="font-serif">Sofia & Luca</div>
+            <div class="text-xs text-gold tracking-[0.2em] uppercase i18n-fade" data-i18n="review_3_role">Anniversary Dinner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reserve" class="py-28 lg:py-40 px-6 lg:px-12 relative">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="text-gold text-xs tracking-[0.4em] uppercase mb-6 fade-up i18n-fade" data-i18n="reserve_title">Reservations</div>
+      <h2 class="font-serif text-5xl lg:text-7xl mb-6 fade-up i18n-fade" data-i18n="reserve_heading">Reserve Your <span class="italic text-gold">Evening</span></h2>
+      <div class="divider mb-10 fade-up"></div>
+      <p class="text-cream-2/70 max-w-2xl mx-auto fade-up i18n-fade" data-i18n="reserve_desc">Join us for an unforgettable dining experience. For parties of 8 or more, please contact us directly.</p>
+    </div>
+
+    <form id="reserveForm" class="bg-[#0e0c0a] border border-gold/15 p-8 lg:p-14 fade-up">
+      <div class="grid md:grid-cols-2 gap-x-10 gap-y-8 mb-10">
+        <div>
+          <label class="text-[10px] tracking-[0.3em] uppercase text-gold mb-2 block i18n-fade" data-i18n="form_name">Full Name</label>
+          <input type="text" class="input-field i18n-fade" data-i18n-placeholder="form_name_ph" placeholder="Your name" required />
+        </div>
+        <div>
+          <label class="text-[10px] tracking-[0.3em] uppercase text-gold mb-2 block i18n-fade" data-i18n="form_email">Email</label>
+          <input type="email" class="input-field i18n-fade" data-i18n-placeholder="form_email_ph" placeholder="your@email.com" required />
+        </div>
+        <div>
+          <label class="text-[10px] tracking-[0.3em] uppercase text-gold mb-2 block i18n-fade" data-i18n="form_date">Date</label>
+          <input type="date" class="input-field" required />
+        </div>
+        <div>
+          <label class="text-[10px] tracking-[0.3em] uppercase text-gold mb-2 block i18n-fade" data-i18n="form_time">Time</label>
+          <select class="input-field" required>
+            <option value="" class="i18n-fade" data-i18n="form_time_ph">Select time</option>
+            <option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option>
+            <option>20:00</option><option>20:30</option><option>21:00</option><option>21:30</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] tracking-[0.3em] uppercase text-gold mb-2 block i18n-fade" data-i18n="form_guests">Guests</label>
+          <select class="input-field" required>
+            <option value="" class="i18n-fade" data-i18n="form_guests_ph">Number of guests</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] tracking-[0.3em] uppercase text-gold mb-2 block i18n-fade" data-i18n="form_phone">Phone</label>
+          <input type="tel" class="input-field i18n-fade" data-i18n-placeholder="form_phone_ph" placeholder="+39 ..." />
+        </div>
+      </div>
+      <div class="mb-10">
+        <label class="text-[10px] tracking-[0.3em] uppercase text-gold mb-2 block i18n-fade" data-i18n="form_requests">Special Requests</label>
+        <textarea class="input-field i18n-fade" data-i18n-placeholder="form_requests_ph" rows="3" placeholder="Allergies, celebrations, seating preferences..."></textarea>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn-primary i18n-fade"><span data-i18n="form_submit">Confirm Reservation</span></button>
+      </div>
+      <div id="formMsg" class="text-center mt-6 text-gold hidden i18n-fade" data-i18n="form_msg">Thank you! We'll confirm your reservation shortly.</div>
+    </form>
+  </div>
+</section>
+
+<footer class="bg-[#070605] pt-20 pb-8 px-6 lg:px-12 border-t border-gold/10">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-4 gap-12 mb-16">
+      <div>
+        <div class="font-serif text-3xl text-gold mb-6">Aurelia<span class="text-cream">.</span></div>
+        <p class="text-cream-2/60 leading-relaxed i18n-fade" data-i18n="footer_desc">Authentic Italian fine dining, where every dish tells a story of heritage and passion.</p>
+      </div>
+      <div>
+        <div class="text-[10px] tracking-[0.3em] uppercase text-gold mb-6 i18n-fade" data-i18n="footer_visit">Visit Us</div>
+        <p class="text-cream-2/70 leading-relaxed">
+          Via della Spiga, 28<br/>
+          20121 Milano, Italia<br/>
+          +39 02 1234 5678
+        </p>
+      </div>
+      <div>
+        <div class="text-[10px] tracking-[0.3em] uppercase text-gold mb-6 i18n-fade" data-i18n="footer_hours">Hours</div>
+        <p class="text-cream-2/70 leading-relaxed">
+          Tue — Sun<br/>
+          Lunch: 12:00 — 15:00<br/>
+          Dinner: 18:30 — 23:00<br/>
+          <span class="text-gold/70 i18n-fade" data-i18n="footer_closed">Closed Mondays</span>
+        </p>
+      </div>
+      <div>
+        <div class="text-[10px] tracking-[0.3em] uppercase text-gold mb-6 i18n-fade" data-i18n="footer_newsletter">Newsletter</div>
+        <p class="text-cream-2/60 mb-4 i18n-fade" data-i18n="footer_newsletter_desc">Seasonal menus & exclusive events.</p>
+        <div class="flex border-b border-gold/30">
+          <input type="email" class="i18n-fade" data-i18n-placeholder="form_email_ph" placeholder="Your email" class="flex-1 bg-transparent py-3 text-sm focus:outline-none" />
+          <button class="text-gold text-xs tracking-[0.2em] uppercase">→</button>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gold/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="text-xs text-cream-2/50 tracking-wider i18n-fade" data-i18n="footer_rights">© 2026 Trattoria Aurelia. All rights reserved.</div>
+      <div class="flex gap-6 text-xs text-cream-2/50 tracking-wider">
+        <a href="#" class="hover:text-gold transition-colors i18n-fade" data-i18n="footer_privacy">Privacy</a>
+        <a href="#" class="hover:text-gold transition-colors i18n-fade" data-i18n="footer_terms">Terms</a>
+        <a href="#" class="hover:text-gold transition-colors i18n-fade" data-i18n="footer_insta">Instagram</a>
+        <a href="#" class="hover:text-gold transition-colors i18n-fade" data-i18n="footer_fb">Facebook</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const translations = {
+    en: {
+      nav_home: "Home", nav_story: "Story", nav_menu: "Menu", nav_experience: "Experience", nav_reservations: "Reservations", nav_book: "Book a Table",
+      hero_est: "Est. 1987 · Milano", hero_title1: "Where Every", hero_title2: '<span class="italic text-gold">Bite</span> Tells a Story',
+      hero_desc: "A celebration of Italian heritage, crafted with passion and served with elegance in the heart of the city.",
+      hero_explore: "Explore Menu", hero_reserve: "Reserve a Table", hero_scroll: "Scroll",
+      marquee_1: "Authentic Italian", marquee_2: "Handmade Pasta", marquee_3: "Fine Wine Selection", marquee_4: "Wood-Fired Oven", marquee_5: "Truffle Specialties", marquee_6: "Seasonal Ingredients",
+      about_title: "Our Story", about_heading: 'A Legacy of <span class="italic text-gold">Flavor</span> & Tradition', about_years: "Years of Culinary Excellence",
+      about_text1: "Founded in 1987 by the Rossi family, Trattoria Aurelia brings the soul of Italian countryside dining to the modern table. Every dish is a tribute to generations of nonnas, farmers, and artisans who believed that food is love made visible.",
+      about_text2: "We source our ingredients daily from trusted producers across Italy — from San Marzano tomatoes to Piedmont truffles — ensuring every plate tells a story of authenticity and passion.",
+      about_stat1: "Signature Dishes", about_stat2: "Fine Wines", about_stat3: "Guest Rating",
+      exp_title: "The Experience", exp_heading: 'Crafted with <span class="italic text-gold">Intention</span>',
+      exp_c1_title: "Michelin Craft", exp_c1_desc: "Our kitchen is led by Chef Marco Rossi, whose techniques blend classical Italian mastery with contemporary artistry.",
+      exp_c2_title: "Farm to Table", exp_c2_desc: "Direct partnerships with Italian farms ensure the freshest seasonal produce arrives at our door every morning.",
+      exp_c3_title: "Curated Wines", exp_c3_desc: "Our sommelier has hand-selected over 150 labels from Italy's finest vineyards, from Barolo to Brunello.",
+      menu_title: "Il Menu", menu_heading: 'A Taste of <span class="italic text-gold">Italia</span>',
+      menu_desc: "Our menu evolves with the seasons, honoring tradition while embracing the finest ingredients of the moment.",
+      tab_antipasti: "Antipasti", tab_primi: "Primi Piatti", tab_secondi: "Secondi", tab_dolci: "Dolci", tab_vini: "Vini",
+      dish_1_name: "Burrata di Puglia", dish_1_desc: "Heirloom tomatoes, basil oil, aged balsamic, sourdough crisps",
+      dish_2_name: "Carpaccio di Manzo", dish_2_desc: "Thinly sliced beef tenderloin, truffle aioli, Parmigiano Reggiano, arugula",
+      dish_3_name: "Carpaccio di Polpo", dish_3_desc: "Grilled octopus, celery, capers, lemon vinaigrette",
+      dish_4_name: "Vitello Tonnato", dish_4_desc: "Chilled veal, tuna-caper sauce, crispy capers",
+      dish_5_name: "Tagliatelle al Tartufo", dish_5_desc: "Fresh egg pasta, black truffle, butter, Parmigiano 36 months",
+      dish_6_name: "Risotto ai Funghi Porcini", dish_6_desc: "Carnaroli rice, porcini mushrooms, white wine, aged butter",
+      dish_7_name: "Lobster Ravioli", dish_7_desc: "Handmade pasta, Maine lobster, saffron cream, chive oil",
+      dish_8_name: "Cacio e Pepe", dish_8_desc: "Tonnarelli pasta, Pecorino Romano, Tellicherry black pepper",
+      dish_9_name: "Bistecca alla Fiorentina", dish_9_desc: "Dry-aged T-bone, rosemary, garlic, for two",
+      dish_10_name: "Branzino al Forno", dish_10_desc: "Whole roasted sea bass, Ligurian olives, cherry tomatoes, capers",
+      dish_11_name: "Ossobuco Milanese", dish_11_desc: "Braised veal shank, saffron risotto, gremolata",
+      dish_12_name: "Anatra Arrosto", dish_12_desc: "Roasted duck breast, orange reduction, polenta",
+      dish_13_name: "Tiramisù Classico", dish_13_desc: "Mascarpone, espresso, Savoiardi biscuits, cocoa",
+      dish_14_name: "Panna Cotta", dish_14_desc: "Vanilla bean, wild berry compote, mint",
+      dish_15_name: "Cannoli Siciliani", dish_15_desc: "Ricotta, candied orange, pistachios, chocolate chips",
+      dish_16_name: "Torta Caprese", dish_16_desc: "Flourless chocolate-almond cake, Amalfi lemon gelato",
+      dish_17_name: "Barolo DOCG 2018", dish_17_desc: "Piedmont · Nebbiolo · Full-bodied, elegant tannins",
+      dish_18_name: "Brunello di Montalcino", dish_18_desc: "Tuscany · Sangiovese · Rich, complex, aged 5 years",
+      dish_19_name: "Prosecco Superiore", dish_19_desc: "Veneto · Glera · Crisp, floral, fine bubbles",
+      dish_20_name: "Limoncello di Sorrento", dish_20_desc: "Amalfi Coast · House-made · Chilled digestif",
+      review_title: "Guest Voices", review_heading: 'Words from <span class="italic text-gold">Our Table</span>',
+      review_1_text: "An extraordinary evening. The truffle tagliatelle was transcendent, and the service made us feel like family. A true gem.", review_1_role: "Food Critic",
+      review_2_text: "From the moment we walked in, every detail spoke of care and tradition. The bistecca was the best I've had outside of Florence.", review_2_role: "Regular Guest",
+      review_3_text: "A Michelin-worthy experience without the pretension. The wine pairing was impeccable. We'll be back every anniversary.", review_3_role: "Anniversary Dinner",
+      reserve_title: "Reservations", reserve_heading: 'Reserve Your <span class="italic text-gold">Evening</span>',
+      reserve_desc: "Join us for an unforgettable dining experience. For parties of 8 or more, please contact us directly.",
+      form_name: "Full Name", form_name_ph: "Your name", form_email: "Email", form_email_ph: "your@email.com",
+      form_date: "Date", form_time: "Time", form_time_ph: "Select time", form_guests: "Guests", form_guests_ph: "Number of guests",
+      form_phone: "Phone", form_phone_ph: "+39 ...", form_requests: "Special Requests", form_requests_ph: "Allergies, celebrations, seating preferences...",
+      form_submit: "Confirm Reservation", form_msg: "Thank you! We'll confirm your reservation shortly.",
+      footer_desc: "Authentic Italian fine dining, where every dish tells a story of heritage and passion.",
+      footer_visit: "Visit Us", footer_hours: "Hours", footer_closed: "Closed Mondays",
+      footer_newsletter: "Newsletter", footer_newsletter_desc: "Seasonal menus & exclusive events.",
+      footer_rights: "© 2026 Trattoria Aurelia. All rights reserved.",
+      footer_privacy: "Privacy", footer_terms: "Terms", footer_insta: "Instagram", footer_fb: "Facebook"
+    },
+    ru: {
+      nav_home: "Главная", nav_story: "История", nav_menu: "Меню", nav_experience: "Впечатления", nav_reservations: "Бронирование", nav_book: "Забронировать стол",
+      hero_est: "Осн. 1987 · Милан", hero_title1: "Где каждый", hero_title2: '<span class="italic text-gold">кусочек</span> рассказывает историю',
+      hero_desc: "Праздник итальянского наследия, приготовленный со страстью и поданный с элегантностью в самом сердце города.",
+      hero_explore: "Изучить меню", hero_reserve: "Забронировать стол", hero_scroll: "Листайте",
+      marquee_1: "Аутентичная Италия", marquee_2: "Домашняя паста", marquee_3: "Изысканные вина", marquee_4: "Дровяная печь", marquee_5: "Трюфельные блюда", marquee_6: "Сезонные ингредиенты",
+      about_title: "Наша история", about_heading: 'Наследие <span class="italic text-gold">вкуса</span> и традиций', about_years: "лет кулинарного совершенства",
+      about_text1: "Основанная в 1987 году семьей Росси, Trattoria Aurelia приносит душу итальянской загородной кухни на современный стол. Каждое блюдо — дань уважения поколениям бабушек, фермеров и ремесленников, веривших, что еда — это любовь, ставшая видимой.",
+      about_text2: "Мы ежедневно закупаем ингредиенты у проверенных производителей по всей Италии — от помидоров Сан-Марцано до пьемонтских трюфелей, гарантируя, что каждая тарелка рассказывает историю подлинности и страсти.",
+      about_stat1: "Фирменные блюда", about_stat2: "Изысканные вина", about_stat3: "Рейтинг гостей",
+      exp_title: "Впечатления", exp_heading: 'Создано с <span class="italic text-gold">намерением</span>',
+      exp_c1_title: "Мишленовское мастерство", exp_c1_desc: "Нашей кухней руководит шеф-повар Марко Росси, чьи техники сочетают классическое итальянское мастерство с современным искусством.",
+      exp_c2_title: "От фермы до стола", exp_c2_desc: "Прямое партнерство с итальянскими фермами гарантирует, что каждое утро к нам поступают самые свежие сезонные продукты.",
+      exp_c3_title: "Подобранные вина", exp_c3_desc: "Наш сомелье вручную отобрал более 150 наименований с лучших виноградников Италии, от Бароло до Брунелло.",
+      menu_title: "Меню", menu_heading: 'Вкус <span class="italic text-gold">Италии</span>',
+      menu_desc: "Наше меню меняется в зависимости от сезона, чтя традиции и используя лучшие ингредиенты момента.",
+      tab_antipasti: "Антипасти", tab_primi: "Прими Пьятти", tab_secondi: "Секонди", tab_dolci: "Дольчи", tab_vini: "Вина",
+      dish_1_name: "Буррата ди Пулья", dish_1_desc: "Реликтовые помидоры, масло базилика, выдержанный бальзамик, хрустящий хлеб",
+      dish_2_name: "Карпаччо из говядины", dish_2_desc: "Тонко нарезанная говяжья вырезка, трюфельный айоли, Пармиджано Реджано, руккола",
+      dish_3_name: "Карпаччо из осьминога", dish_3_desc: "Жареный осьминог, сельдерей, каперсы, лимонный винегрет",
+      dish_4_name: "Вителло Тоннато", dish_4_desc: "Охлажденная телятина, соус из тунца и каперсов, хрустящие каперсы",
+      dish_5_name: "Тальятелле с трюфелем", dish_5_desc: "Свежая яичная паста, черный трюфель, сливочное масло, Пармиджано 36 месяцев",
+      dish_6_name: "Ризотто с белыми грибами", dish_6_desc: "Рис карнароли, белые грибы, белое вино, выдержанное масло",
+      dish_7_name: "Равиоли с лобстером", dish_7_desc: "Домашняя паста, мэнский лобстер, шафрановый крем, масло с шнитт-луком",
+      dish_8_name: "Чачо э Пепе", dish_8_desc: "Паста тоннарелли, Пекорино Романо, черный перец Телличерри",
+      dish_9_name: "Бифштекс по-флорентийски", dish_9_desc: "Стейк Ти-бон сухой выдержки, розмарин, чеснок, на двоих",
+      dish_10_name: "Запеченный бранзино", dish_10_desc: "Целый запеченный морской окунь, лигурийские оливки, помидоры черри, каперсы",
+      dish_11_name: "Оссобуко по-милански", dish_11_desc: "Тушеная телячья голяшка, шафрановое ризотто, гремолата",
+      dish_12_name: "Жареная утка", dish_12_desc: "Жареная утиная грудка, апельсиновый соус, полента",
+      dish_13_name: "Классический Тирамису", dish_13_desc: "Маскарпоне, эспрессо, печенье савоярди, какао",
+      dish_14_name: "Панна Котта", dish_14_desc: "Ванильный стручок, компот из лесных ягод, мята",
+      dish_15_name: "Сицилийские Канноли", dish_15_desc: "Рикотта, цукаты апельсина, фисташки, шоколадная крошка",
+      dish_16_name: "Торт Капрезе", dish_16_desc: "Шоколадно-миндальный торт без муки, лимонное джелато Амальфи",
+      dish_17_name: "Бароло DOCG 2018", dish_17_desc: "Пьемонт · Неббиоло · Полнотелое, элегантные танины",
+      dish_18_name: "Брунелло ди Монтальчино", dish_18_desc: "Тоскана · Санджовезе · Насыщенное, сложное, выдержка 5 лет",
+      dish_19_name: "Просекко Супериоре", dish_19_desc: "Венето · Глера · Свежее, цветочное, тонкие пузырьки",
+      dish_20_name: "Лимончелло ди Сорренто", dish_20_desc: "Побережье Амальфи · Домашнее · Охлажденный дижестив",
+      review_title: "Отзывы гостей", review_heading: 'Слова с <span class="italic text-gold">нашего стола</span>',
+      review_1_text: "Необыкновенный вечер. Тальятелле с трюфелем было превосходным, а обслуживание заставило нас почувствовать себя как дома. Настоящая жемчужина.", review_1_role: "Ресторанный критик",
+      review_2_text: "С момента, как мы вошли, каждая деталь говорила о заботе и традициях. Бифштекс был лучшим, что я ел за пределами Флоренции.", review_2_role: "Постоянный гость",
+      review_3_text: "Впечатления уровня Мишлен без претенциозности. Сочетание вин было безупречным. Мы будем возвращаться на каждую годовщину.", review_3_role: "Годовщина",
+      reserve_title: "Бронирование", reserve_heading: 'Забронируйте ваш <span class="italic text-gold">вечер</span>',
+      reserve_desc: "Присоединяйтесь к нам для незабываемого ужина. Для компаний от 8 человек, пожалуйста, свяжитесь с нами напрямую.",
+      form_name: "Полное имя", form_name_ph: "Ваше имя", form_email: "Электронная почта", form_email_ph: "your@email.com",
+      form_date: "Дата", form_time: "Время", form_time_ph: "Выберите время", form_guests: "Гости", form_guests_ph: "Количество гостей",
+      form_phone: "Телефон", form_phone_ph: "+7 ...", form_requests: "Особые пожелания", form_requests_ph: "Аллергии, праздники, предпочтения по рассадке...",
+      form_submit: "Подтвердить бронирование", form_msg: "Спасибо! Мы скоро подтвердим ваше бронирование.",
+      footer_desc: "Аутентичная итальянская высокая кухня, где каждое блюдо рассказывает историю наследия и страсти.",
+      footer_visit: "Посетите нас", footer_hours: "Часы работы", footer_closed: "Закрыто по понедельникам",
+      footer_newsletter: "Рассылка", footer_newsletter_desc: "Сезонные меню и эксклюзивные мероприятия.",
+      footer_rights: "© 2026 Trattoria Aurelia. Все права защищены.",
+      footer_privacy: "Конфиденциальность", footer_terms: "Условия", footer_insta: "Instagram", footer_fb: "Facebook"
+    },
+    hy: {
+      nav_home: "Գլխավոր", nav_story: "Պատմություն", nav_menu: "Մենյու", nav_experience: "Փորձ", nav_reservations: "Ամրագրում", nav_book: "Ամրագրել սեղան",
+      hero_est: "Հիմն. 1987 · Միլան", hero_title1: "Որտեղ յուրաքանչյուր", hero_title2: '<span class="italic text-gold">պատառը</span> պատմություն է պատմում',
+      hero_desc: "Իտալական ժառանգության տոնակատարություն, պատրաստված կրքով և մատուցված էլեգանտությամբ քաղաքի կենտրոնում:",
+      hero_explore: "Դիտել մենյուն", hero_reserve: "Ամրագրել սեղան", hero_scroll: "Ոլորել",
+      marquee_1: "Իսկական իտալական", marquee_2: "Տնական պաստա", marquee_3: "Ընտիր գինիներ", marquee_4: "Փայտի վառարան", marquee_5: "Սունկային ուտեստներ", marquee_6: "Սեզոնային բաղադրիչներ",
+      about_title: "Մեր պատմությունը", about_heading: 'Համի և <span class="italic text-gold">ավանդույթների</span> ժառանգություն', about_years: "խոհարարական գերազանցության տարիներ",
+      about_text1: "Հիմնադրվելով 1987 թվականին Ռոսսի ընտանիքի կողմից, Trattoria Aurelia-ն իտալական գյուղական խոհանոցի հոգին բերում է ժամանակակից սեղան: Յուրաքանչյուր ուտեստ հարգանքի տուրք է այն սերունդներին, ովքեր հավատում էին, որ սնունդը տեսանելի սեր է:",
+      about_text2: "Մենք ամեն օր բաղադրիչներ ենք ձեռք բերում Իտալիայի վստահելի արտադրողներից՝ Սան Մարցանո լոլիկներից մինչև Պիեմոնտի տրյուֆելներ՝ ապահովելով, որ յուրաքանչյուր ափսե պատմի իսկության և կրքի պատմություն:",
+      about_stat1: "Ֆիրմային ուտեստներ", about_stat2: "Ընտիր գինիներ", about_stat3: "Հյուրերի վարկանիշ",
+      exp_title: "Փորձը", exp_heading: 'Ստեղծված է <span class="italic text-gold">մտադրությամբ</span>',
+      exp_c1_title: "Միշելյան վարպետություն", exp_c1_desc: "Մեր խոհանոցը ղեկավարում է շեֆ-խոհարար Մարկո Ռոսսին, ում տեխնիկան համադրում է դասական իտալական վարպետությունը ժամանակակից արվեստի հետ:",
+      exp_c2_title: "Ֆերմայից մինչև սեղան", exp_c2_desc: "Իտալական ֆերմաների հետ ուղղակի համագործակցությունը երաշխավորում է, որ ամեն առավոտ մեզ են հասնում ամենաթարմ սեզոնային մթերքները:",
+      exp_c3_title: "Ընտրյալ գինիներ", exp_c3_desc: "Մեր սոմելիեն ձեռքով ընտրել է Իտալիայի լավագույն խաղողի այգիների ավելի քան 150 անվանում՝ Բարոլոյից մինչև Բրունելլո:",
+      menu_title: "Մենյու", menu_heading: 'Իտալիայի <span class="italic text-gold">համը</span>',
+      menu_desc: "Մեր մենյուն փոխվում է ըստ եղանակների՝ հարգելով ավանդույթները և ընդգրկելով պահի լավագույն բաղադրիչները:",
+      tab_antipasti: "Անտիպաստի", tab_primi: "Պրիմի Պիատի", tab_secondi: "Սեկոնդի", tab_dolci: "Դոլչի", tab_vini: "Գինիներ",
+      dish_1_name: "Բուրատա դի Պուլիա", dish_1_desc: "Ժառանգական լոլիկներ, բազիլիկի յուղ, հնեցված բալզամիկ, խրթխրթան հաց",
+      dish_2_name: "Տավարի կարպաչչո", dish_2_desc: "Բարակ կտրատված տավարի միջուկ, տրյուֆելային այոլի, Պարմիջանո Ռեջանո, ռուկոլա",
+      dish_3_name: "Ութոտնուկի կարպաչչո", dish_3_desc: "Խորոված ութոտնուկ, նեխուր, կապարիս, կիտրոնային վինեգրետ",
+      dish_4_name: "Վիտելլո Տոնատո", dish_4_desc: "Հովացրած հորթի միս, տունա-կապարիս սոուս, խրթխրթան կապարիս",
+      dish_5_name: "Տալիատելե տրյուֆելով", dish_5_desc: "Թարմ ձվի պաստա, սև տրյուֆել, կարագ, 36 ամսական Պարմիջանո",
+      dish_6_name: "Ռիզոտո սպիտակ սնկով", dish_6_desc: "Կարնարոլի բրինձ, սպիտակ սունկ, սպիտակ գինի, հնեցված կարագ",
+      dish_7_name: "Ռավիոլի լոբստերով", dish_7_desc: "Տնական պաստա, Մենի լոբստեր, զաֆրանի կրեմ, սխտորի յուղ",
+      dish_8_name: "Կաչո է Պեպե", dish_8_desc: "Տոնարելի պաստա, Պեկորինո Ռոմանո, Տելիչերի սև պղպեղ",
+      dish_9_name: "Ֆլորենցիական բիֆշտեքս", dish_9_desc: "Չոր հնեցված T-ոսկոր, ռոզմարին, սխտոր, երկուսի համար",
+      dish_10_name: "Ջեռոցում թխված բրանզինո", dish_10_desc: "Ամբողջական թխված ծովային օձաձուկ, լիգուրիական ձիթապտուղ, չերի լոլիկ, կապարիս",
+      dish_11_name: "Միլանյան Օսոբուկո", dish_11_desc: "Թխված հորթի ոտք, զաֆրանով ռիզոտո, գրեմոլատա",
+      dish_12_name: "Խորոված բադ", dish_12_desc: "Խորոված բադի կրծքամիս, նարնջի սոուս, պոլենտա",
+      dish_13_name: "Դասական Տիրամիսու", dish_13_desc: "Մասկարպոնե, էսպրեսո, սավոյարդի թխվածքաբլիթ, կակաո",
+      dish_14_name: "Պաննա Կոտա", dish_14_desc: "Վանիլի պատիճ, անտառային հատապտուղների կոմպոտ, անանուխ",
+      dish_15_name: "Սիցիլիական Կաննոլի", dish_15_desc: "Ռիկոտտա, շաքարապատ նարինջ, պիստակ, շոկոլադի կտորներ",
+      dish_16_name: "Կապրեզե տորթ", dish_16_desc: "Ալյուր չպարունակող շոկոլադ-նուշի տորթ, Ամալֆիի կիտրոնային ջելատո",
+      dish_17_name: "Բարոլո DOCG 2018", dish_17_desc: "Պիեմոնտ · Նեբբիոլո · լիամարմին, էլեգանտ տանիններ",
+      dish_18_name: "Բրունելլո դի Մոնտալչինո", dish_18_desc: "Տոսկանա · Սանջովեզե · հարուստ, բարդ, 5 տարվա հնեցում",
+      dish_19_name: "Պրոսեկո Սուպերիորե", dish_19_desc: "Վենետո · Գլերա · թարմ, ծաղկային, նուրբ պղպջակներ",
+      dish_20_name: "Լիմոնչելլո դի Սորենտո", dish_20_desc: "Ամալֆիի ափ · Տնական · Հովացրած դիժեստիվ",
+      review_title: "Հյուրերի կարծիքներ", review_heading: 'Խոսքեր <span class="italic text-gold">մեր սեղանից</span>',
+      review_1_text: "Արտասովոր երեկո: Տրյուֆելով տալիատելեն անգերազանցելի էր, իսկ սպասարկումը մեզ ընտանիքի պես էր զգացնում: Իսկական գոհար:", review_1_role: "Ռեստորանային քննադատ",
+      review_2_text: "Մեր մուտքի պահից յուրաքանչյուր մանրամասն խոսում էր հոգատարության և ավանդույթների մասին: Բիֆշտեքսը լավագույնն էր, ինչ ես կերել եմ Ֆլորենցիայից դուրս:", review_2_role: "Մշտական հյուր",
+      review_3_text: "Միշելյան մակարդակի փորձ՝ առանց պահանջկոտության: Գինու զուգորդումը անթերի էր: Մենք կվերադառնանք յուրաքանչյուր տարեդարձի:", review_3_role: "Տարեդարձի ընթրիք",
+      reserve_title: "Ամրագրում", reserve_heading: 'Ամրագրեք ձեր <span class="italic text-gold">երեկոն</span>',
+      reserve_desc: "Միացեք մեզ անմոռանալի ճաշկերույթի համար: 8 և ավելի հյուրերի համար, խնդրում ենք ուղղակիորեն կապվել մեզ հետ:",
+      form_name: "Անուն Ազգանուն", form_name_ph: "Ձեր անունը", form_email: "Էլ. հասցե", form_email_ph: "your@email.com",
+      form_date: "Ամսաթիվ", form_time: "Ժամ", form_time_ph: "Ընտրեք ժամը", form_guests: "Հյուրեր", form_guests_ph: "Հյուրերի քանակը",
+      form_phone: "Հեռախոս", form_phone_ph: "+374 ...", form_requests: "Հատուկ խնդրանքներ", form_requests_ph: "Ալերգիաներ, տոնակատարություններ, նստելու նախընտրություններ...",
+      form_submit: "Հաստատել ամրագրումը", form_msg: "Շնորհակալություն: Մենք շուտով կհաստատենք ձեր ամրագրումը:",
+      footer_desc: "Իսկական իտալական բարձրակարգ խոհանոց, որտեղ յուրաքանչյուր ուտեստ պատմում է ժառանգության և կրքի մասին:",
+      footer_visit: "Այցելեք մեզ", footer_hours: "Աշխատաժամեր", footer_closed: "Փակ է երկուշաբթի օրերին",
+      footer_newsletter: "Նամակագրություն", footer_newsletter_desc: "Սեզոնային մենյուներ և բացառիկ միջոցառումներ:",
+      footer_rights: "© 2026 Trattoria Aurelia. Բոլոր իրավունքները պաշտպանված են:",
+      footer_privacy: "Գաղտնիություն", footer_terms: "Պայմաններ", footer_insta: "Instagram", footer_fb: "Facebook"
+    }
+  };
+
+  let currentLang = localStorage.getItem('aurelia_lang') || 'en';
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('aurelia_lang', lang);
+    document.documentElement.lang = lang;
+    
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      if(btn.dataset.lang === lang) {
+        btn.classList.add('active', 'text-gold');
+        btn.classList.remove('text-cream-2/60');
+      } else {
+        btn.classList.remove('active', 'text-gold');
+        btn.classList.add('text-cream-2/60');
+      }
+    });
+
+    document.querySelectorAll('.i18n-fade').forEach(el => {
+      el.style.opacity = '0';
+    });
+
+    setTimeout(() => {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
         }
-
-        // Multi-step Envelope Opening Animation
-        function openEnvelope() {
-            const envelope = document.getElementById('envelope');
-            const wrapper = document.getElementById('envelopeWrapper');
-            const mainContent = document.getElementById('mainContent');
-
-            if (envelope.classList.contains('open')) return;
-
-            // Step 1: Anticipation shake
-            envelope.classList.add('shake');
-
-            // Step 2: Open flap after shake
-            setTimeout(() => {
-                envelope.classList.remove('shake');
-                envelope.classList.add('open');
-            }, 600);
-
-            // Step 3: Fade out wrapper and reveal main content
-            setTimeout(() => {
-                wrapper.classList.add('hidden');
-                
-                setTimeout(() => {
-                    mainContent.classList.add('visible');
-                    checkFadeElements();
-                }, 400);
-            }, 2000);
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[lang][key]) {
+          el.placeholder = translations[lang][key];
         }
+      });
+      
+      document.querySelectorAll('.i18n-fade').forEach(el => {
+        el.style.opacity = '1';
+      });
+    }, 300);
+  }
 
-        // RSVP Form Logic
-        function toggleGuestCount(show) {
-            const guestGroup = document.getElementById('guestCountGroup');
-            const guestInput = document.getElementById('guests');
-            
-            if (show) {
-                guestGroup.style.display = 'block';
-                guestGroup.style.animation = 'fadeInUp 0.5s ease forwards';
-                guestInput.setAttribute('required', 'required');
-            } else {
-                guestGroup.style.display = 'none';
-                guestInput.removeAttribute('required');
-                guestInput.value = '1';
-            }
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setLanguage(btn.dataset.lang);
+    });
+  });
+
+  window.addEventListener('load', () => {
+    setLanguage(currentLang);
+    const tl = gsap.timeline();
+    tl.to('.loader-text span', { y:0, duration:1, ease:'power4.out' })
+      .to('#loader', { yPercent:-100, duration:1.2, ease:'power4.inOut', delay:0.4 })
+      .from('#navbar', { y:-30, opacity:0, duration:0.8, ease:'power3.out' }, '-=0.6')
+      .to('.reveal-line span', { y:0, duration:1.2, stagger:0.12, ease:'power4.out' }, '-=0.4')
+      .to('.fade-up', { y:0, opacity:1, duration:1, stagger:0.1, ease:'power3.out' }, '-=0.8');
+  });
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.to('#heroBg', {
+    yPercent:20,
+    ease:'none',
+    scrollTrigger:{ trigger:'#home', start:'top top', end:'bottom top', scrub:true }
+  });
+
+  gsap.utils.toArray('.fade-up').forEach(el => {
+    gsap.fromTo(el,
+      { y:40, opacity:0 },
+      { y:0, opacity:1, duration:1, ease:'power3.out',
+        scrollTrigger:{ trigger:el, start:'top 85%' }
+      }
+    );
+  });
+
+  gsap.utils.toArray('.parallax-img').forEach(img => {
+    gsap.to(img, {
+      yPercent:-10,
+      ease:'none',
+      scrollTrigger:{ trigger:img, start:'top bottom', end:'bottom top', scrub:true }
+    });
+  });
+
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      navbar.classList.add('nav-glass', 'py-3');
+      navbar.classList.remove('py-5');
+    } else {
+      navbar.classList.remove('nav-glass', 'py-3');
+      navbar.classList.add('py-5');
+    }
+  });
+
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.menu-panel');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.dataset.tab;
+      panels.forEach(p => {
+        if (p.dataset.panel === target) {
+          p.classList.remove('hidden');
+          gsap.fromTo(p, { opacity:0, y:20 }, { opacity:1, y:0, duration:0.6, ease:'power3.out' });
+        } else {
+          p.classList.add('hidden');
         }
+      });
+    });
+  });
 
-        function createSparkles(element) {
-            const rect = element.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            for (let i = 0; i < 20; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'sparkle';
-                
-                const angle = (Math.PI * 2 * i) / 20;
-                const velocity = 50 + Math.random() * 100;
-                const tx = Math.cos(angle) * velocity;
-                const ty = Math.sin(angle) * velocity;
-                
-                sparkle.style.left = `${centerX}px`;
-                sparkle.style.top = `${centerY}px`;
-                sparkle.style.setProperty('--tx', `${tx}px`);
-                sparkle.style.setProperty('--ty', `${ty}px`);
-                
-                document.body.appendChild(sparkle);
-                
-                setTimeout(() => sparkle.remove(), 1000);
-            }
-        }
+  document.getElementById('reserveForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = document.getElementById('formMsg');
+    msg.classList.remove('hidden');
+    gsap.fromTo(msg, { opacity:0, y:10 }, { opacity:1, y:0, duration:0.5 });
+    e.target.reset();
+    setTimeout(() => msg.classList.add('hidden'), 5000);
+  });
 
-        function handleRSVP(event) {
-            event.preventDefault();
-            
-            const form = document.getElementById('rsvpForm');
-            const successMsg = document.getElementById('successMessage');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-
-            setTimeout(() => {
-                form.style.display = 'none';
-                successMsg.style.display = 'block';
-                createSparkles(successMsg);
-            }, 1500);
-        }
-
-        // Intersection Observer for scroll animations
-        function checkFadeElements() {
-            const targets = document.querySelectorAll('.fade-in-target');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('fade-in');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.15 });
-
-            targets.forEach(target => observer.observe(target));
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            checkFadeElements();
-        });
-    </script>
+  const menuToggle = document.getElementById('menuToggle');
+  const menuClose = document.getElementById('menuClose');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuToggle.addEventListener('click', () => mobileMenu.classList.add('open'));
+  menuClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  document.querySelectorAll('.mob-link').forEach(l => {
+    l.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+</script>
 </body>
 </html>
 ```
